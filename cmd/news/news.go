@@ -5,9 +5,11 @@ package news
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/buger/jsonparser"
+	"github.com/fatih/color"
 	"github.com/rjhoppe/go-compare-to-spy/config"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
@@ -31,9 +33,10 @@ func getNews(key string, secret string, ticker string) {
 		}
 	}
 
-	fmt.Println("")
 	for i := 1; i < len(headline); i++ {
-		fmt.Println(headline[i])
+		j := strconv.Itoa(i)
+		fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
+		fmt.Println("")
 	}
 	fmt.Println("")
 }
@@ -41,7 +44,7 @@ func getNews(key string, secret string, ticker string) {
 // newsCmd represents the news command
 var NewsCmd = &cobra.Command{
 	Use:   "news",
-	Short: "Get the most recent news for a given ticker",
+	Short: "Get the most recent headlines for a specified ticker.",
 	Long: `Returns the 5 most recent news headline for a supplied ticker`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])

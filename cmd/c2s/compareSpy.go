@@ -84,7 +84,7 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 // compareSpyCmd represents the compareSpy command
 var CompareSpyCmd = &cobra.Command{
 	Use:   "c2s",
-	Short: "Compares a ticker's performance to spy",
+	Short: "Compares a ticker's performance to the SP500 over a specified time period.",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}

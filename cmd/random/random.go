@@ -23,7 +23,7 @@ var timeVal string
 // randomCmd represents the random command
 var RandomCmd = &cobra.Command{
 	Use:   "random",
-	Short: "A brief description of your command",
+	Short: "Compare the performance of a random equity against the S&P500.",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -82,13 +82,11 @@ to quickly create a Cobra application.`,
 		if (spyPositive == "+") {
 			spyValC := color.New(color.FgGreen)
 			spyTextC := color.YellowString("SPY")
-			fmt.Println("")
 			fmt.Printf("%v %v performance: ", spyTextC, timeVal)
 			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		} else {
 			spyValC := color.New(color.FgRed)
 			spyTextC := color.YellowString("SPY")
-			fmt.Println("")
 			fmt.Printf("%v %v performance: ", spyTextC, timeVal)
 			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		}
