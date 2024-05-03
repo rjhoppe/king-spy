@@ -5,35 +5,17 @@ package news
 
 import (
 	"fmt"
-	"io"
-	"net/http"
 	"strings"
 
 	"github.com/buger/jsonparser"
 	"github.com/rjhoppe/go-compare-to-spy/config"
+	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
 )
 
 func getNews(key string, secret string, ticker string) {
 	url := "https://data.alpaca.markets/v1beta1/news?symbols=" + strings.ToUpper(ticker)
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", key)
-	req.Header.Add("APCA-API-SECRET-KEY", secret)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		fmt.Printf("Error: Could not get data. %v", err)
-		return
-	}
-
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Printf("Error: Could not read response body. %v", err)
-	}
-
+	body := utils.GetRequest(key, secret, url)
 	headline := make([]string, 0)
 
 	i := 0
@@ -49,16 +31,18 @@ func getNews(key string, secret string, ticker string) {
 		}
 	}
 
+	fmt.Println("")
 	for i := 1; i < len(headline); i++ {
 		fmt.Println(headline[i])
 	}
+	fmt.Println("")
 }
 
 // newsCmd represents the news command
 var NewsCmd = &cobra.Command{
 	Use:   "news",
 	Short: "Get the most recent news for a given ticker",
-	Long: `Returns the most recent news headline for a supplied ticker`,
+	Long: `Returns the 5 most recent news headline for a supplied ticker`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])
 		_, key, secret := config.Init()
