@@ -98,7 +98,6 @@ func getLow(key string, secret string, ticker string, timeVal string) {
 	priceDiff := (curPrice - lowestVal)
 	percDiff := (priceDiff / lowestVal) * 100
 
-	fmt.Println("")
 	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$" + strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
 	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 	fmt.Println("")
@@ -109,7 +108,7 @@ func getLow(key string, secret string, ticker string, timeVal string) {
 // high2LowCmd represents the high2Low command
 var LowCmd = &cobra.Command{
 	Use:   "low",
-	Short: "Returns a the percentage and dollar increase from a recent low.",
+	Short: "Returns the percentage and dollar increase from a recent low.",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

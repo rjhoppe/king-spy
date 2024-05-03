@@ -99,7 +99,6 @@ func getHigh(key string, secret string, ticker string, timeVal string) {
 	percDiff := (priceDiff / highestVal) * 100
 	// priceColor := color.New(color.FgRed)
 	
-	fmt.Println("")
 	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
 	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 	fmt.Println("")
@@ -108,7 +107,7 @@ func getHigh(key string, secret string, ticker string, timeVal string) {
 // highCmd represents the high command
 var HighCmd = &cobra.Command{
 	Use:   "high",
-	Short: "Returns a the percentage and dollar decrease from a recent high.",
+	Short: "Returns the percentage and dollar decrease from a recent high.",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])
