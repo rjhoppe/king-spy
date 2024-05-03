@@ -6,22 +6,30 @@ package cmd
 import (
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/h2l"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/random"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-compare-to-spy",
+	Use:   "king-spy",
 	Short: "Compares a stock ticker's performance to SPY over a period of time",
-	Long: `Can also perform other actions such as return ticker info and calculate recent lows to
-	current price and recent hights to the current, lower price`,
+	Long: color.GreenString("INFO:") + "\n This CLI application compares the performance of individual stocks or ETFs to the "+
+	"SPY ETF, which is a popular proxy for the S&P 500. This tool can help you explore " +
+	"which equities are currently \n outperforming the indexes. However, in using this tool, " + 
+	"you will find that most equities don't \n outperform the indexes. At least not over the " +
+	"long haul! \n \n" + " " + color.YellowString("All hail, King SPY!"),
+	// Example: "example [sub command]",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
+
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -35,10 +43,13 @@ func Execute() {
 func addSubcommandPalettes() {
 	rootCmd.AddCommand(c2s.CompareSpyCmd)
 	rootCmd.AddCommand(news.NewsCmd)
-	rootCmd.AddCommand(h2l.High2LowCmd)
+	rootCmd.AddCommand(low.LowCmd)
+	rootCmd.AddCommand(high.HighCmd)
+	rootCmd.AddCommand(random.RandomCmd)
 }
 
 func init() {
+	// utils.AsciiTitleText()
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
