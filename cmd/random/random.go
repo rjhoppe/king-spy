@@ -80,11 +80,13 @@ to quickly create a Cobra application.`,
 		}
 
 		if (spyPositive == "+") {
+			fmt.Println("")
 			spyValC := color.New(color.FgGreen)
 			spyTextC := color.YellowString("SPY")
 			fmt.Printf("%v %v performance: ", spyTextC, timeVal)
 			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		} else {
+			fmt.Println("")
 			spyValC := color.New(color.FgRed)
 			spyTextC := color.YellowString("SPY")
 			fmt.Printf("%v %v performance: ", spyTextC, timeVal)

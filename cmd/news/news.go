@@ -5,6 +5,7 @@ package news
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -15,7 +16,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func getNews(key string, secret string, ticker string) {
+func GetNews(key string, secret string, ticker string, cmdArgs string) {
 	url := "https://data.alpaca.markets/v1beta1/news?symbols=" + strings.ToUpper(ticker)
 	body := utils.GetRequest(key, secret, url)
 	headline := make([]string, 0)
@@ -33,6 +34,10 @@ func getNews(key string, secret string, ticker string) {
 		}
 	}
 
+	if cmdArgs == "news" {
+		fmt.Println("")
+	}
+
 	for i := 1; i < len(headline); i++ {
 		j := strconv.Itoa(i)
 		fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
@@ -48,8 +53,9 @@ var NewsCmd = &cobra.Command{
 	Long: `Returns the 5 most recent news headline for a supplied ticker`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])
+		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()
-		getNews(key, secret, ticker)
+		GetNews(key, secret, ticker, cmdArgs)
 	},
 }
 

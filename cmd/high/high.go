@@ -5,6 +5,7 @@ package high
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ import (
 
 var timeVal string
 
-func getHigh(key string, secret string, ticker string, timeVal string) {
+func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs string) {
 	var startTime string
 	var endTime string
 	var timeframe string
@@ -31,7 +32,7 @@ func getHigh(key string, secret string, ticker string, timeVal string) {
 		startTime = pastTimeVal.Format(time.RFC3339)
 		endTime = curTime.Format(time.RFC3339)
 		timeframe = "1D"
-		iterator = 28
+		iterator = 10
 	case "3M":
 		pastTimeVal := curTime.AddDate(0, -3, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)
@@ -99,6 +100,10 @@ func getHigh(key string, secret string, ticker string, timeVal string) {
 	percDiff := (priceDiff / highestVal) * 100
 	// priceColor := color.New(color.FgRed)
 	
+	if cmdArgs == "high" {
+		fmt.Println("")
+	}
+
 	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
 	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 	fmt.Println("")
@@ -111,21 +116,24 @@ var HighCmd = &cobra.Command{
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])
+		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()
 		
 		timeArg, _ := cmd.Flags().GetString("time")
 
 		if timeArg != "1Y" && timeArg != "6M" && timeArg != "3M" && timeArg != "1M" {
-			fmt.Println("Timeframe not recognized")
+			fmt.Println("")
+			flagVal := color.YellowString("--time={timeframe}")
+			fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
 			fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
-			fmt.Println("Defaulting to 1Y timeframe")
+			fmt.Println("Defaulting to 1Y timeframe.")
 		} else if timeArg == "12M" {
 			timeVal = "1Y"
 		} else {
 			timeVal = timeArg
 		}
 
-		getHigh(key, secret, ticker, timeVal)
+		GetHigh(key, secret, ticker, timeVal, cmdArgs)
 	},
 }
 
