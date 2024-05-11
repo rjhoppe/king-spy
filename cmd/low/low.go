@@ -5,6 +5,7 @@ package low
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ import (
 
 var timeVal string
 
-func getLow(key string, secret string, ticker string, timeVal string) {
+func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs string) {
 	var startTime string
 	var endTime string
 	var timeframe string
@@ -26,12 +27,13 @@ func getLow(key string, secret string, ticker string, timeVal string) {
 	curTime := time.Now()
 
 	switch timeVal {
+	// 1M is not working?
 	case "1M":
 		pastTimeVal := curTime.AddDate(0, -1, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)
 		endTime = curTime.Format(time.RFC3339)
 		timeframe = "1D"
-		iterator = 28
+		iterator = 10
 	case "3M":
 		pastTimeVal := curTime.AddDate(0, -3, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)
@@ -98,6 +100,10 @@ func getLow(key string, secret string, ticker string, timeVal string) {
 	priceDiff := (curPrice - lowestVal)
 	percDiff := (priceDiff / lowestVal) * 100
 
+	if cmdArgs == "low" {
+		fmt.Println("")
+	}
+
 	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$" + strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
 	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 	fmt.Println("")
@@ -118,12 +124,15 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 			// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
 			ticker := strings.ToLower(args[0])
+			cmdArgs := os.Args[1]
 			_, key, secret := config.Init()
 			
 			timeArg, _ := cmd.Flags().GetString("time")
 
 			if timeArg != "1Y" && timeArg != "6M" && timeArg != "3M" && timeArg != "1M" {
-				fmt.Println("Timeframe not recognized")
+				fmt.Println("")
+				flagVal := color.YellowString("--time={timeframe}")
+				fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
 				fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
 				fmt.Println("Defaulting to 1Y timeframe")
 			} else if timeArg == "12M" {
@@ -132,7 +141,7 @@ to quickly create a Cobra application.`,
 				timeVal = timeArg
 			}
 
-			getLow(key, secret, ticker, timeVal)
+			GetLow(key, secret, ticker, timeVal, cmdArgs)
 	},
 }
 

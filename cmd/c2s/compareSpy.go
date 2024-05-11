@@ -180,7 +180,7 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	CompareSpyCmd.PersistentFlags().String("time", "", "A length of time for performance comparison")
+	CompareSpyCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

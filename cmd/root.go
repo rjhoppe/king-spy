@@ -7,11 +7,14 @@ import (
 	"os"
 
 	"github.com/fatih/color"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/all"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/random"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/wsb"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
 )
@@ -31,10 +34,12 @@ var rootCmd = &cobra.Command{
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	if len(os.Args) < 2 {
+		utils.AsciiTitleText()
+	}
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -47,6 +52,9 @@ func addSubcommandPalettes() {
 	rootCmd.AddCommand(low.LowCmd)
 	rootCmd.AddCommand(high.HighCmd)
 	rootCmd.AddCommand(random.RandomCmd)
+	rootCmd.AddCommand(chart.ChartCmd)
+	rootCmd.AddCommand(all.AllCmd)
+	rootCmd.AddCommand(wsb.WsbCmd)
 }
 
 func init() {
@@ -63,7 +71,7 @@ func init() {
 	addSubcommandPalettes()
 	// input := os.Stdin
 	// fmt.Println(input)
-	utils.AsciiTitleText()
+	// utils.AsciiTitleText()
 }
 
 
