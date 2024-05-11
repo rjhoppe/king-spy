@@ -23,11 +23,11 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "king-spy",
 	Short: "Compares a stock ticker's performance to SPY over a period of time",
-	Long: color.GreenString("INFO:") + "\n This CLI application compares the performance of individual stocks or ETFs to the "+
-	"SPY ETF, which is a popular proxy for the S&P 500. This tool can help you explore " +
-	"which equities are currently \n outperforming the indexes. However, in using this tool, " + 
-	"you will find that most equities don't \n outperform the indexes. At least not over the " +
-	"long haul! \n \n" + " " + color.YellowString("All hail, King SPY!"),
+	Long: color.GreenString("INFO:") + "\n This CLI application compares the performance of individual stocks or ETFs to the " +
+		"SPY ETF, which is a popular proxy for the S&P 500. This tool can help you explore " +
+		"which equities are currently \n outperforming the indexes. However, in using this tool, " +
+		"you will find that most equities don't \n outperform the indexes. At least not over the " +
+		"long haul! \n \n" + " " + color.YellowString("All hail, King SPY!"),
 	// Example: "example [sub command]",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
@@ -67,11 +67,9 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	
+
 	addSubcommandPalettes()
 	// input := os.Stdin
 	// fmt.Println(input)
 	// utils.AsciiTitleText()
 }
-
-

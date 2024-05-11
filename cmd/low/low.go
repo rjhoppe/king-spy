@@ -61,7 +61,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		iterator = 11
 	}
 
-	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime +"&limit=11&adjustment=raw&feed=iex&sort=asc"
+	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
 	body := utils.GetRequest(key, secret, url)
 	var lowestVal float64
@@ -96,7 +96,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	if err != nil {
 		panic(err)
 	}
-	
+
 	priceDiff := (curPrice - lowestVal)
 	percDiff := (priceDiff / lowestVal) * 100
 
@@ -104,8 +104,8 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		fmt.Println("")
 	}
 
-	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$" + strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
-	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
+	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
+	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
 	fmt.Println("")
 	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(higestVal, 'f', 2, 64)), highestDate[:10])
 	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
@@ -122,32 +122,34 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-			// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
-			ticker := strings.ToLower(args[0])
-			cmdArgs := os.Args[1]
-			_, key, secret := config.Init()
-			
-			timeArg, _ := cmd.Flags().GetString("time")
+		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
+		ticker := args[0]
+		utils.CheckTickerBadChars(ticker)
+		ticker = strings.ToLower(ticker)
+		cmdArgs := os.Args[1]
+		_, key, secret := config.Init()
 
-			if timeArg != "1Y" && timeArg != "6M" && timeArg != "3M" && timeArg != "1M" {
-				fmt.Println("")
-				flagVal := color.YellowString("--time={timeframe}")
-				fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
-				fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
-				fmt.Println("Defaulting to 1Y timeframe")
-			} else if timeArg == "12M" {
-				timeVal = "1Y"
-			} else {
-				timeVal = timeArg
-			}
+		timeArg, _ := cmd.Flags().GetString("time")
 
-			GetLow(key, secret, ticker, timeVal, cmdArgs)
+		if timeArg != "1Y" && timeArg != "6M" && timeArg != "3M" && timeArg != "1M" {
+			fmt.Println("")
+			flagVal := color.YellowString("--time={timeframe}")
+			fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
+			fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
+			fmt.Println("Defaulting to 1Y timeframe")
+		} else if timeArg == "12M" {
+			timeVal = "1Y"
+		} else {
+			timeVal = timeArg
+		}
+
+		GetLow(key, secret, ticker, timeVal, cmdArgs)
 	},
 }
 
 func init() {
 	// rootCmd.AddCommand(high2LowCmd)
-	LowCmd.PersistentFlags().String("time", "", "A time window for the low request")
+	LowCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 
 	// Here you will define your flags and configuration settings.
 

@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/spf13/viper"
 )
@@ -13,7 +11,7 @@ func Init() (*alpaca.Account, string, string) {
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Printf("Error occurred: %v", err)
+		panic(err)
 	}
 
 	key := viper.GetString("APCA_API_KEY_ID")
@@ -25,7 +23,7 @@ func Init() (*alpaca.Account, string, string) {
 		APISecret: secret,
 		BaseURL:   endpoint,
 	})
-	
+
 	acct, err := client.GetAccount()
 	if err != nil {
 		panic(err)

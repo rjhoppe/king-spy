@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/pkg/browser"
+	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +16,9 @@ func LaunchChart(ticker string) {
 	classicUrl := "https://stockcharts.com/h-sc/ui?s="
 	newUrl := "https://stockcharts.com/sc3/ui/?s="
 
-	err := browser.OpenURL(classicUrl+ticker)
+	err := browser.OpenURL(classicUrl + ticker)
 	if err != nil {
-		err := browser.OpenURL(newUrl+ticker)
+		err := browser.OpenURL(newUrl + ticker)
 		if err != nil {
 			panic(err)
 		}
@@ -36,7 +37,9 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ticker := strings.ToLower(args[0])
+		ticker := args[0]
+		utils.CheckTickerBadChars(ticker)
+		ticker = strings.ToLower(ticker)
 		LaunchChart(ticker)
 	},
 }
