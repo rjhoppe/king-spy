@@ -123,7 +123,9 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
-		ticker := strings.ToLower(args[0])
+		ticker := args[0]
+		utils.CheckTickerBadChars(ticker)
+		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()
 
@@ -147,7 +149,7 @@ to quickly create a Cobra application.`,
 
 func init() {
 	// rootCmd.AddCommand(high2LowCmd)
-	LowCmd.PersistentFlags().String("time", "", "A time window for the low request")
+	LowCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 
 	// Here you will define your flags and configuration settings.
 

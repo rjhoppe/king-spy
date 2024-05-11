@@ -90,8 +90,9 @@ var CompareSpyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
 		ticker := args[0]
-		timeArg, _ := cmd.Flags().GetString("time")
+		utils.CheckTickerBadChars(ticker)
 
+		timeArg, _ := cmd.Flags().GetString("time")
 		if timeArg == "" {
 			timeVal = "YTD"
 		} else {

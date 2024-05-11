@@ -115,7 +115,9 @@ var HighCmd = &cobra.Command{
 	Short: "Returns the percentage and dollar decrease from a recent high.",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		ticker := strings.ToLower(args[0])
+		ticker := args[0]
+		utils.CheckTickerBadChars(ticker)
+		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()
 
@@ -139,7 +141,7 @@ var HighCmd = &cobra.Command{
 
 func init() {
 	// Here you will define your flags and configuration settings.
-	HighCmd.PersistentFlags().String("time", "", "A time window for the low request")
+	HighCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:

@@ -74,20 +74,6 @@ func SelectRandomTicker() (string, string) {
 		// "PANW",
 	}
 
-	// tickers := [...]string{
-	// 	"AAPL", "GOOGL", "AMZN", "META", "NVDA", "TSLA", "MSFT",
-	// 	"NFLX", "CRM", "CAT", "V", "MA", "AXP", "KO", "MCD", "CMG",
-	// 	"DIS", "CVX", "XOM", "OXY", "PWR", "CSCO", "ORCL", "INTU",
-	// 	"ADBE", "DELL", "AVGO", "AMD", "SMCI", "KLAC", "IT", "TSM",
-	// 	"MRVL", "ON", "ARM", "SNPS", "AMAT", "QQQ", "ASML", "WM",
-	// 	"GE", "GS", "BLK", "JPM", "MS", "APO", "PGR", "ALL", "BKNG",
-	// 	"EXPE", "ABNB", "UAL", "DAL", "LLY", "UNH", "VRTX", "MMM",
-	// 	"ABT", "ALGN", "ISRG", "SHOP", "TEAM", "PANW",
-	// }
-
-	// Placeholder
-	// fmt.Println(tickerDict)
-
 	i := 0
 	tickerList := make([]string, len(tickerDict))
 	for k := range tickerDict {
