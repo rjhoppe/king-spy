@@ -23,13 +23,14 @@ var deltaPositive string
 var timeVal string
 
 func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup) {
+	wg.Add(1)
 	defer wg.Done()
 	var url string
 	var startTime string
 	var endTime string
 	curTime := time.Now()
 
-	if (urlType == "history") {
+	if urlType == "history" {
 		switch timeVal {
 		case "1M":
 			pastTimeVal := curTime.AddDate(0, -1, 0)
@@ -61,10 +62,10 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades?limit=1&start=" + startTime + "&end=" + endTime + "&feed=iex&currency=USD"
 	} else {
 		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
-	} 
+	}
 
-	body := utils.GetRequest(key, secret, url)	
-	if (urlType == "history") {
+	body := utils.GetRequest(key, secret, url)
+	if urlType == "history" {
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
 			fmt.Printf("Error: Could not parse ticker asking price. %v %v", err, ticker)
@@ -85,19 +86,19 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 var CompareSpyCmd = &cobra.Command{
 	Use:   "c2s",
 	Short: "Compares a ticker's performance to the SP500 over a specified time period.",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
 		ticker := args[0]
 		timeArg, _ := cmd.Flags().GetString("time")
-		
+
 		if timeArg == "" {
 			timeVal = "YTD"
 		} else {
 			timeVal = timeArg
 		}
 
-		wg := new(sync.WaitGroup)
+		wg := sync.WaitGroup{}
 		_, key, secret := config.Init()
 
 		ch1 := make(chan float64)
@@ -105,38 +106,40 @@ var CompareSpyCmd = &cobra.Command{
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
 
-		wg.Add(4)
-		go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, wg)
-		go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, wg)
-		go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, wg)
-		go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, wg)
+		go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, &wg)
+		go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, &wg)
+		go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg)
+		go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg)
+
+		wg.Wait()
 
 		spyHist := float64(<-ch4)
 		spyLatest := float64(<-ch3)
 		tickerHist := float64(<-ch2)
 		tickerLatest := float64(<-ch1)
+
 		spyPerf := ((spyLatest - spyHist) / spyHist) * 100
-		if (spyPerf > 0) {
+		if spyPerf > 0 {
 			spyPositive = "+"
 		} else {
 			spyPositive = ""
 		}
 
 		tickerPerf := ((tickerLatest - tickerHist) / tickerHist) * 100
-		if (tickerPerf > 0) {
+		if tickerPerf > 0 {
 			tickerPositive = "+"
 		} else {
 			tickerPositive = ""
 		}
 
 		deltaPerf := tickerPerf - spyPerf
-		if (deltaPerf > 0) {
+		if deltaPerf > 0 {
 			deltaPositive = "+"
 		} else {
 			deltaPositive = ""
 		}
 
-		if (spyPositive == "+") {
+		if spyPositive == "+" {
 			spyC := color.New(color.FgGreen)
 			spyTextC := color.YellowString("SPY")
 			fmt.Println("")
@@ -150,7 +153,7 @@ var CompareSpyCmd = &cobra.Command{
 			spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		}
 
-		if (tickerPositive == "+") {
+		if tickerPositive == "+" {
 			tickerC := color.New(color.FgGreen)
 			fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
 			tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
@@ -160,7 +163,7 @@ var CompareSpyCmd = &cobra.Command{
 			tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 		}
 
-		if (deltaPositive == "+") {
+		if deltaPositive == "+" {
 			deltaC := color.New(color.FgGreen)
 			fmt.Printf("%v %v performance vs SPY: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
 			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
@@ -171,8 +174,6 @@ var CompareSpyCmd = &cobra.Command{
 			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 			fmt.Println("")
 		}
-
-		wg.Wait()
 	},
 }
 

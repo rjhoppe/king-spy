@@ -60,7 +60,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 		iterator = 11
 	}
 
-	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime +"&limit=11&adjustment=raw&feed=iex&sort=asc"
+	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
 	body := utils.GetRequest(key, secret, url)
 	var highestVal float64
@@ -95,17 +95,17 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	if err != nil {
 		panic(err)
 	}
-	
+
 	priceDiff := (highestVal - curPrice)
 	percDiff := (priceDiff / highestVal) * 100
 	// priceColor := color.New(color.FgRed)
-	
+
 	if cmdArgs == "high" {
 		fmt.Println("")
 	}
 
-	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
-	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
+	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
+	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
 	fmt.Println("")
 }
 
@@ -113,12 +113,12 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 var HighCmd = &cobra.Command{
 	Use:   "high",
 	Short: "Returns the percentage and dollar decrease from a recent high.",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := strings.ToLower(args[0])
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()
-		
+
 		timeArg, _ := cmd.Flags().GetString("time")
 
 		if timeArg != "1Y" && timeArg != "6M" && timeArg != "3M" && timeArg != "1M" {

@@ -13,12 +13,14 @@ func GetRequest(key string, secret string, url string) (body []byte) {
 	req.Header.Add("APCA-API-SECRET-KEY", secret)
 
 	res, err := http.DefaultClient.Do(req)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		fmt.Printf("Error: Could not get data. %v", err)
 		return
 	}
-
-	defer res.Body.Close()
 
 	respBody, err := io.ReadAll(res.Body)
 	if err != nil {

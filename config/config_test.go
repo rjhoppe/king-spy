@@ -19,7 +19,3 @@ func TestEnvFile(t *testing.T) {
 		t.Error("Failure to get secret value from .env file")
 	}
 }
-
-// func TestInitFail(t *testing.T) {
-
-// }

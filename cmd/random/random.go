@@ -33,7 +33,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		timeArg, _ := cmd.Flags().GetString("time")
 		randomTick, randomTickName := utils.SelectRandomTicker()
-		
+
 		if timeArg == "" {
 			timeVal = "YTD"
 		} else {
@@ -48,74 +48,73 @@ to quickly create a Cobra application.`,
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
 
-		wg.Add(4)
 		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "latest", ch1, wg)
 		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "history", ch2, wg)
 		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, wg)
 		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, wg)
+
+		wg.Wait()
 
 		spyHist := float64(<-ch4)
 		spyLatest := float64(<-ch3)
 		tickerHist := float64(<-ch2)
 		tickerLatest := float64(<-ch1)
 		spyPerf := ((spyLatest - spyHist) / spyHist) * 100
-		if (spyPerf > 0) {
+		if spyPerf > 0 {
 			spyPositive = "+"
 		} else {
 			spyPositive = ""
 		}
 
 		tickerPerf := ((tickerLatest - tickerHist) / tickerHist) * 100
-		if (tickerPerf > 0) {
+		if tickerPerf > 0 {
 			tickerPositive = "+"
 		} else {
 			tickerPositive = ""
 		}
 
 		deltaPerf := tickerPerf - spyPerf
-		if (deltaPerf > 0) {
+		if deltaPerf > 0 {
 			deltaPositive = "+"
 		} else {
 			deltaPositive = ""
 		}
 
-		if (spyPositive == "+") {
+		if spyPositive == "+" {
 			fmt.Println("")
 			spyValC := color.New(color.FgGreen)
 			spyTextC := color.YellowString("SPY")
-			fmt.Printf("%v %v performance: ", spyTextC, timeVal)
+			fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
 			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		} else {
 			fmt.Println("")
 			spyValC := color.New(color.FgRed)
 			spyTextC := color.YellowString("SPY")
-			fmt.Printf("%v %v performance: ", spyTextC, timeVal)
+			fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
 			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 		}
 
-		if (tickerPositive == "+") {
+		if tickerPositive == "+" {
 			tickerValC := color.New(color.FgGreen)
-			fmt.Printf("%v %v %v performance: ", color.YellowString(randomTickName), color.YellowString("(" + strings.ToUpper(randomTick) + ")"), timeVal)
+			fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
 			tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 		} else {
 			tickerValC := color.New(color.FgRed)
-			fmt.Printf("%v %v %v performance: ", color.YellowString(randomTickName), color.YellowString("(" + strings.ToUpper(randomTick) + ")"), timeVal)
+			fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
 			tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 		}
 
-		if (deltaPositive == "+") {
+		if deltaPositive == "+" {
 			deltaC := color.New(color.FgGreen)
-			fmt.Printf("%v %v %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("(" + strings.ToUpper(randomTick) + ")"), timeVal)
+			fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
 			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 			fmt.Println("")
 		} else {
 			deltaC := color.New(color.FgRed)
-			fmt.Printf("%v %v %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("(" + strings.ToUpper(randomTick) + ")"), timeVal)
+			fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
 			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 			fmt.Println("")
 		}
-
-		wg.Wait()
 	},
 }
 

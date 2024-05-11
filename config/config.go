@@ -23,7 +23,7 @@ func Init() (*alpaca.Account, string, string) {
 		APISecret: secret,
 		BaseURL:   endpoint,
 	})
-	
+
 	acct, err := client.GetAccount()
 	if err != nil {
 		panic(err)

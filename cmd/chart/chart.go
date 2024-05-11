@@ -15,9 +15,9 @@ func LaunchChart(ticker string) {
 	classicUrl := "https://stockcharts.com/h-sc/ui?s="
 	newUrl := "https://stockcharts.com/sc3/ui/?s="
 
-	err := browser.OpenURL(classicUrl+ticker)
+	err := browser.OpenURL(classicUrl + ticker)
 	if err != nil {
-		err := browser.OpenURL(newUrl+ticker)
+		err := browser.OpenURL(newUrl + ticker)
 		if err != nil {
 			panic(err)
 		}

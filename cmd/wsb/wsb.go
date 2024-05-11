@@ -15,10 +15,10 @@ import (
 )
 
 type WSBData struct {
-	No_Of_Comments int
-	Sentiment string
+	No_Of_Comments  int
+	Sentiment       string
 	Sentiment_Score float64
-	Ticker string
+	Ticker          string
 }
 
 // wsbCmd represents the wsb command
