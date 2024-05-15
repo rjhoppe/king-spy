@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -19,6 +20,19 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go-version }}
+
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+        envkey_APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+        envkey_ENDPOINT: ${{ secrets.ENDPOINT }}
+        file_name: .env
+        fail_on_empty: false
+        sort_keys: false
+
+    - name: Output secret value
+      run: echo "${envkey_APCA_API_KEY_ID}"
 
     - name: Display Go version
       run: go version
