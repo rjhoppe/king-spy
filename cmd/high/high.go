@@ -20,12 +20,14 @@ import (
 var timeVal string
 
 func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs string) {
-	var startTime string
-	var endTime string
-	var timeframe string
-	var iterator int
-	curTime := time.Now()
+	var (
+		startTime string
+		endTime   string
+		timeframe string
+		iterator  int
+	)
 
+	curTime := time.Now()
 	switch timeVal {
 	case "1M":
 		pastTimeVal := curTime.AddDate(0, -1, 0)
@@ -62,7 +64,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 
 	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
-	body := utils.GetRequest(key, secret, url)
+	body, _ := utils.GetRequest(key, secret, url)
 	var highestVal float64
 	var highestDate string
 
@@ -90,7 +92,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	}
 
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
-	curPriceBody := utils.GetRequest(key, secret, curPriceUrl)
+	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
 	if err != nil {
 		panic(err)
@@ -116,7 +118,7 @@ var HighCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()

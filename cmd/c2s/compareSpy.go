@@ -17,10 +17,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var spyPositive string
-var tickerPositive string
-var deltaPositive string
-var timeVal string
+var (
+	spyPositive    string
+	tickerPositive string
+	deltaPositive  string
+	timeVal        string
+)
 
 func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup) {
 	wg.Add(1)
@@ -64,7 +66,7 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	}
 
-	body := utils.GetRequest(key, secret, url)
+	body, _ := utils.GetRequest(key, secret, url)
 	if urlType == "history" {
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
@@ -99,8 +101,8 @@ var CompareSpyCmd = &cobra.Command{
 			timeVal = timeArg
 		}
 
-		wg := sync.WaitGroup{}
 		_, key, secret := config.Init()
+		wg := sync.WaitGroup{}
 
 		ch1 := make(chan float64)
 		ch2 := make(chan float64)

@@ -20,9 +20,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var spyPositive string
-var tickerPositive string
-var deltaPositive string
+var (
+	spyPositive    string
+	tickerPositive string
+	deltaPositive  string
+)
 
 func GetPerf(tickerLatest float64, tickerHistPrice float64, ch chan float64, wg *sync.WaitGroup) {
 	wg.Add(1)
@@ -61,7 +63,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		chartFlag, _ := cmd.Flags().GetBool("chart")
