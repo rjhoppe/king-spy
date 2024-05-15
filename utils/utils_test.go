@@ -50,3 +50,10 @@ func TestBlankTicker(t *testing.T) {
 	utils.IsTickerValid("    ")
 	assert.Equal(t, expected, expected, "invalid ticker test failed")
 }
+
+func TestTickerValidationValid(t *testing.T) {
+	expected := ""
+	viper.AddConfigPath("./..")
+	utils.TickerValidation("aapl")
+	assert.Equal(t, expected, expected, "valid ticker validation func test failed")
+}

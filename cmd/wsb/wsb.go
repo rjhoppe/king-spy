@@ -24,7 +24,7 @@ type WSBData struct {
 // wsbCmd represents the wsb command
 var WsbCmd = &cobra.Command{
 	Use:   "wsb",
-	Short: "A brief description of your command",
+	Short: "Returns the top tickers mentioned on WSB and the related sentiment",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

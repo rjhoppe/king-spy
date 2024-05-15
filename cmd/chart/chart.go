@@ -29,7 +29,7 @@ func LaunchChart(ticker string) {
 // chartCmd represents the chart command
 var ChartCmd = &cobra.Command{
 	Use:   "chart",
-	Short: "A brief description of your command",
+	Short: "Opens a one year chart for a ticker in your default browser",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

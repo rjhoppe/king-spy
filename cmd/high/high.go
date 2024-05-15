@@ -114,7 +114,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 // highCmd represents the high command
 var HighCmd = &cobra.Command{
 	Use:   "high",
-	Short: "Returns the percentage and dollar decrease from a recent high.",
+	Short: "Returns a ticker's percentage and dollar decrease from a recent high",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]

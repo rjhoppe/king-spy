@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/fatih/color"
+	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/all"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
@@ -21,14 +22,22 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "king-spy",
+	Use:   "ks",
 	Short: "Compares a stock ticker's performance to SPY over a period of time",
-	Long: color.GreenString("INFO:") + "\n This CLI application compares the performance of individual stocks or ETFs to the " +
-		"SPY ETF, which is a popular proxy for the S&P 500. This tool can help you explore " +
-		"which equities are currently \n outperforming the indexes. However, in using this tool, " +
-		"you will find that most equities don't \n outperform the indexes. At least not over the " +
-		"long haul! \n \n" + " " + color.YellowString("All hail, King SPY!"),
+	Long: "\n This CLI application compares the performance of " +
+		"individual stocks or ETFs to the S&P 500. \n" +
+		" This tool can help you explore which equities are currently outperforming the indexes. \n" +
+		" However, in using this tool, you will find that most equities don't outperform the indexes. \n" +
+		" At least not over the long haul! \n \n" + " " + color.YellowString("All hail, King SPY!"),
 	// Example: "example [sub command]",
+	Example: "  ks all aapl -t=1M \n" +
+		"  ks c2s aapl -t=1Y \n" +
+		"  ks chart aapl \n" +
+		"  ks high aapl \n" +
+		"  ks low aapl \n" +
+		"  ks news aapl \n" +
+		"  ks random \n" +
+		"  ks wsb",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -37,6 +46,13 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	cc.Init(&cc.Config{
+		RootCmd:  rootCmd,
+		Headings: cc.HiGreen + cc.Bold + cc.Underline,
+		Commands: cc.HiYellow + cc.Bold,
+		Example:  cc.Italic,
+	})
+
 	if len(os.Args) < 2 {
 		utils.AsciiTitleText()
 	}
@@ -66,6 +82,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	addSubcommandPalettes()

@@ -23,7 +23,7 @@ var timeVal string
 // randomCmd represents the random command
 var RandomCmd = &cobra.Command{
 	Use:   "random",
-	Short: "Compare the performance of a random equity against the S&P500.",
+	Short: "Compare the performance of a random equity against the S&P 500",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

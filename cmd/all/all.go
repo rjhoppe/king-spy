@@ -53,14 +53,10 @@ func returnTickerPerf(tickerPerf float64, ticker string, timeVal string) {
 
 // allCmd represents the all command
 var AllCmd = &cobra.Command{
-	Use:   "all",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:     "all",
+	Short:   "Runs the c2s, high, low, and news cmds for a single ticker",
+	Long:    `This command packages cmds c2s, high, low, and news together for a single ticker and returns the results`,
+	Example: "  ks all aapl",
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
 		utils.TickerValidation(ticker)
@@ -170,7 +166,7 @@ func init() {
 	// Here you will define your flags and configuration settings.
 
 	// Add flag for when you want chart to display
-	AllCmd.Flags().BoolP("chart", "c", false, "Tell program if you want it to open a chart of ticker in default browser")
+	AllCmd.Flags().BoolP("chart", "c", false, "Tells the program that you want it to open a chart of ticker in default browser")
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:

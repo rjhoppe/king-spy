@@ -49,7 +49,7 @@ func GetNews(key string, secret string, ticker string, cmdArgs string) {
 // newsCmd represents the news command
 var NewsCmd = &cobra.Command{
 	Use:   "news",
-	Short: "Get the most recent headlines for a specified ticker.",
+	Short: "Get the most recent headlines for a specified ticker",
 	Long:  `Returns the 5 most recent news headline for a supplied ticker`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]

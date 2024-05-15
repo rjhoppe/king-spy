@@ -115,7 +115,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 // high2LowCmd represents the high2Low command
 var LowCmd = &cobra.Command{
 	Use:   "low",
-	Short: "Returns the percentage and dollar increase from a recent low.",
+	Short: "Returns a ticker's percentage and dollar increase from a recent low.",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
