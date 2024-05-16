@@ -15,15 +15,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var spyPositive string
-var tickerPositive string
-var deltaPositive string
-var timeVal string
+var (
+	spyPositive    string
+	tickerPositive string
+	deltaPositive  string
+	timeVal        string
+)
 
 // randomCmd represents the random command
 var RandomCmd = &cobra.Command{
 	Use:   "random",
-	Short: "Compare the performance of a random equity against the S&P500.",
+	Short: "Compare the performance of a random equity against the S&P 500",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -33,7 +35,6 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		timeArg, _ := cmd.Flags().GetString("time")
 		randomTick, randomTickName := utils.SelectRandomTicker()
-
 		if timeArg == "" {
 			timeVal = "YTD"
 		} else {

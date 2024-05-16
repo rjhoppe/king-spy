@@ -20,12 +20,13 @@ import (
 var timeVal string
 
 func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs string) {
-	var startTime string
-	var endTime string
-	var timeframe string
-	var iterator int
+	var (
+		startTime string
+		endTime   string
+		timeframe string
+		iterator  int
+	)
 	curTime := time.Now()
-
 	switch timeVal {
 	// 1M is not working?
 	case "1M":
@@ -63,9 +64,11 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 
 	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
-	body := utils.GetRequest(key, secret, url)
-	var lowestVal float64
-	var lowestDate string
+	body, _ := utils.GetRequest(key, secret, url)
+	var (
+		lowestVal  float64
+		lowestDate string
+	)
 
 	i := 0
 	lowestVal = 0.0
@@ -91,7 +94,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	}
 
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
-	curPriceBody := utils.GetRequest(key, secret, curPriceUrl)
+	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
 	if err != nil {
 		panic(err)
@@ -114,7 +117,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 // high2LowCmd represents the high2Low command
 var LowCmd = &cobra.Command{
 	Use:   "low",
-	Short: "Returns the percentage and dollar increase from a recent low.",
+	Short: "Returns a ticker's percentage and dollar increase from a recent low.",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -124,7 +127,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()

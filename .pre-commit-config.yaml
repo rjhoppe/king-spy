@@ -4,6 +4,8 @@ repos:
   hooks:
     - id: check-added-large-files
     - id: trailing-whitespace
+    - id: check-yaml
+    - id: detect-private-key
 - repo: https://github.com/lietu/go-pre-commit
   rev: v0.1.0
   hooks:

@@ -18,7 +18,7 @@ import (
 
 func GetNews(key string, secret string, ticker string, cmdArgs string) {
 	url := "https://data.alpaca.markets/v1beta1/news?symbols=" + strings.ToUpper(ticker)
-	body := utils.GetRequest(key, secret, url)
+	body, _ := utils.GetRequest(key, secret, url)
 	headline := make([]string, 0)
 
 	i := 0
@@ -49,11 +49,11 @@ func GetNews(key string, secret string, ticker string, cmdArgs string) {
 // newsCmd represents the news command
 var NewsCmd = &cobra.Command{
 	Use:   "news",
-	Short: "Get the most recent headlines for a specified ticker.",
+	Short: "Get the most recent headlines for a specified ticker",
 	Long:  `Returns the 5 most recent news headline for a supplied ticker`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		_, key, secret := config.Init()

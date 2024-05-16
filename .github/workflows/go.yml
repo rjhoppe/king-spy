@@ -1,0 +1,38 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main", "tests" ]
+
+jobs:
+  validate_prod_push:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        go-version: ['1.19', '1.20', '1.21.x', '1.22.x']
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Make .env file
+      id: makeenv
+      uses: ozaytsev86/create-env-file@v1
+      with:
+        ENV_APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+        ENV_APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+        ENV_ENDPOINT: ${{ secrets.ENDPOINT }}
+    - name: Set up Go
+      if: steps.makeenv.outcome == 'success'
+      id: goconfig
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Run Go build
+      if: steps.goconfig.outcome == 'success'
+      id: gobuild
+      run: go build -v ./...
+    - name: Run Go tests
+      if: steps.gobuild.outcome == 'success'
+      id: gotest
+      run: go test -v ./...

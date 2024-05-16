@@ -17,19 +17,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var spyPositive string
-var tickerPositive string
-var deltaPositive string
-var timeVal string
+var (
+	spyPositive    string
+	tickerPositive string
+	deltaPositive  string
+	timeVal        string
+)
 
 func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup) {
 	wg.Add(1)
 	defer wg.Done()
-	var url string
-	var startTime string
-	var endTime string
-	curTime := time.Now()
+	var (
+		url       string
+		startTime string
+		endTime   string
+	)
 
+	curTime := time.Now()
 	if urlType == "history" {
 		switch timeVal {
 		case "1M":
@@ -64,7 +68,7 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	}
 
-	body := utils.GetRequest(key, secret, url)
+	body, _ := utils.GetRequest(key, secret, url)
 	if urlType == "history" {
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
@@ -85,13 +89,15 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 // compareSpyCmd represents the compareSpy command
 var CompareSpyCmd = &cobra.Command{
 	Use:   "c2s",
-	Short: "Compares a ticker's performance to the SP500 over a specified time period.",
+	Short: "Compares a ticker's performance to the SP500 over a specified time period",
 	Long:  ``,
+	Example: "  ks c2s aapl \n" +
+		"  ks c2s aapl -t=1M \n" +
+		"  ks c2s aapl -t=1Y \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
-
+		utils.TickerValidation(ticker)
 		timeArg, _ := cmd.Flags().GetString("time")
 		if timeArg == "" {
 			timeVal = "YTD"
@@ -99,8 +105,8 @@ var CompareSpyCmd = &cobra.Command{
 			timeVal = timeArg
 		}
 
-		wg := sync.WaitGroup{}
 		_, key, secret := config.Init()
+		wg := sync.WaitGroup{}
 
 		ch1 := make(chan float64)
 		ch2 := make(chan float64)

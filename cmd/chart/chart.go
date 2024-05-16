@@ -29,7 +29,7 @@ func LaunchChart(ticker string) {
 // chartCmd represents the chart command
 var ChartCmd = &cobra.Command{
 	Use:   "chart",
-	Short: "A brief description of your command",
+	Short: "Opens a one year chart for a ticker in your default browser",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -38,7 +38,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		LaunchChart(ticker)
 	},

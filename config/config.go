@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/spf13/viper"
 )
@@ -26,7 +28,7 @@ func Init() (*alpaca.Account, string, string) {
 
 	acct, err := client.GetAccount()
 	if err != nil {
-		panic(err)
+		log.Fatal("error: could not return client credentials")
 	}
 
 	return acct, key, secret

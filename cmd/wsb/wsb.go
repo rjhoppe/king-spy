@@ -24,7 +24,7 @@ type WSBData struct {
 // wsbCmd represents the wsb command
 var WsbCmd = &cobra.Command{
 	Use:   "wsb",
-	Short: "A brief description of your command",
+	Short: "Returns the top tickers mentioned on WSB and the related sentiment",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -32,8 +32,10 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var stocks []WSBData
-		var sentColor string
+		var (
+			stocks    []WSBData
+			sentColor string
+		)
 
 		resp, err := http.Get("https://tradestie.com/api/v1/apps/reddit")
 		if err != nil {
