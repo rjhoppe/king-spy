@@ -2,14 +2,20 @@ name: Go
 
 on:
   push:
-    branches: [ "main", "tests" ]
+    branches: [ "main" ]
 
 jobs:
-  create_env_file_job:
-    runs-on: ubuntu-latest
+  validate_prod_push:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        go-version: ['1.19', '1.20', '1.21.x', '1.22.x']
+
     steps:
     - uses: actions/checkout@v4
-    - name: Make envfile
+    - name: Make .env file
       id: makeenv
       uses: ozaytsev86/create-env-file@v1
       with:
@@ -21,13 +27,12 @@ jobs:
       id: goconfig
       uses: actions/setup-go@v4
       with:
-        # go-version: ${{ matrix.go-version }}
-        go-version: 1.22
-    - name: Build
+        go-version: ${{ matrix.go-version }}
+    - name: Run Go build
       if: steps.goconfig.outcome == 'success'
       id: gobuild
       run: go build -v ./...
-    - name: Run tests
+    - name: Run Go tests
       if: steps.gobuild.outcome == 'success'
       id: gotest
       run: go test -v ./...
