@@ -1,0 +1,17 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  create_env_file_job:
+    runs-on: ubuntu-latest
+    steps:
+    - shell: bash
+      env:
+        APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+      run: echo -e "$APCA_API_KEY_ID"
