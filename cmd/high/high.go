@@ -121,7 +121,7 @@ var HighCmd = &cobra.Command{
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
-		_, key, secret := config.Init()
+		_, key, secret, _ := config.Init()
 
 		timeArg, _ := cmd.Flags().GetString("time")
 

@@ -56,7 +56,7 @@ var NewsCmd = &cobra.Command{
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
-		_, key, secret := config.Init()
+		_, key, secret, _ := config.Init()
 		GetNews(key, secret, ticker, cmdArgs)
 	},
 }

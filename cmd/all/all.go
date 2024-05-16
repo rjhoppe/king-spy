@@ -63,7 +63,7 @@ var AllCmd = &cobra.Command{
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
 		chartFlag, _ := cmd.Flags().GetBool("chart")
-		_, key, secret := config.Init()
+		_, key, secret, _ := config.Init()
 
 		wg1 := sync.WaitGroup{}
 

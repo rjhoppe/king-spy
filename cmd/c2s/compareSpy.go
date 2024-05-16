@@ -104,7 +104,7 @@ var CompareSpyCmd = &cobra.Command{
 			timeVal = timeArg
 		}
 
-		_, key, secret := config.Init()
+		_, key, secret, _ := config.Init()
 		wg := sync.WaitGroup{}
 
 		ch1 := make(chan float64)

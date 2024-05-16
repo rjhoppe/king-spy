@@ -26,7 +26,7 @@ func CheckTickerBadChars(x string) error {
 
 // IsTickerValid tests ticker input for valid ticker, exported for testing
 func IsTickerValid(ticker string) error {
-	_, key, secret := config.Init()
+	_, key, secret, _ := config.Init()
 	url := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	_, err := GetRequest(key, secret, url)
 	if err != nil {

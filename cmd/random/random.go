@@ -41,7 +41,7 @@ to quickly create a Cobra application.`,
 		}
 
 		wg := new(sync.WaitGroup)
-		_, key, secret := config.Init()
+		_, key, secret, _ := config.Init()
 
 		ch1 := make(chan float64)
 		ch2 := make(chan float64)
