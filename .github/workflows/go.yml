@@ -8,21 +8,28 @@ jobs:
   create_env_file_job:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Make envfile
+      id: makeenv
       uses: ozaytsev86/create-env-file@v1
       with:
         ENV_APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
         ENV_APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
         ENV_ENDPOINT: ${{ secrets.ENDPOINT }}
-    - uses: actions/checkout@v4
     - name: Set up Go
+      if: steps.makeenv.outcome == 'success'
+      id: goconfig
       uses: actions/setup-go@v4
       with:
         # go-version: ${{ matrix.go-version }}
         go-version: 1.22
     - name: Build
+      if: steps.goconfig.outcome == 'success'
+      id: gobuild
       run: go build -v ./...
     - name: Run tests
+      if: steps.gobuild.outcome == 'success'
+      id: gotest
       run: go test -v ./...
 
 
