@@ -65,8 +65,10 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
 	body, _ := utils.GetRequest(key, secret, url)
-	var lowestVal float64
-	var lowestDate string
+	var (
+		lowestVal  float64
+		lowestDate string
+	)
 
 	i := 0
 	lowestVal = 0.0
@@ -128,7 +130,7 @@ to quickly create a Cobra application.`,
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
-		_, key, secret, _ := config.Init()
+		_, key, secret := config.Init()
 
 		timeArg, _ := cmd.Flags().GetString("time")
 

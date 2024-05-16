@@ -15,10 +15,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var spyPositive string
-var tickerPositive string
-var deltaPositive string
-var timeVal string
+var (
+	spyPositive    string
+	tickerPositive string
+	deltaPositive  string
+	timeVal        string
+)
 
 // randomCmd represents the random command
 var RandomCmd = &cobra.Command{
@@ -33,7 +35,6 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		timeArg, _ := cmd.Flags().GetString("time")
 		randomTick, randomTickName := utils.SelectRandomTicker()
-
 		if timeArg == "" {
 			timeVal = "YTD"
 		} else {
@@ -41,7 +42,7 @@ to quickly create a Cobra application.`,
 		}
 
 		wg := new(sync.WaitGroup)
-		_, key, secret, _ := config.Init()
+		_, key, secret := config.Init()
 
 		ch1 := make(chan float64)
 		ch2 := make(chan float64)

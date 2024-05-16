@@ -27,11 +27,13 @@ var (
 func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup) {
 	wg.Add(1)
 	defer wg.Done()
-	var url string
-	var startTime string
-	var endTime string
-	curTime := time.Now()
+	var (
+		url       string
+		startTime string
+		endTime   string
+	)
 
+	curTime := time.Now()
 	if urlType == "history" {
 		switch timeVal {
 		case "1M":
@@ -95,8 +97,7 @@ var CompareSpyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
-
+		utils.TickerValidation(ticker)
 		timeArg, _ := cmd.Flags().GetString("time")
 		if timeArg == "" {
 			timeVal = "YTD"
@@ -104,7 +105,7 @@ var CompareSpyCmd = &cobra.Command{
 			timeVal = timeArg
 		}
 
-		_, key, secret, _ := config.Init()
+		_, key, secret := config.Init()
 		wg := sync.WaitGroup{}
 
 		ch1 := make(chan float64)

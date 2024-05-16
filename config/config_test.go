@@ -10,7 +10,7 @@ import (
 
 func TestEnvFile(t *testing.T) {
 	viper.AddConfigPath("./..")
-	_, key, secret, _ := config.Init()
+	_, key, secret := config.Init()
 	keySplit := strings.Split(key, "")
 	secretSplit := strings.Split(secret, "")
 	if keySplit[0] != "P" {

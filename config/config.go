@@ -1,13 +1,13 @@
 package config
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/alpacahq/alpaca-trade-api-go/v3/alpaca"
 	"github.com/spf13/viper"
 )
 
-func Init() (*alpaca.Account, string, string, error) {
+func Init() (*alpaca.Account, string, string) {
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 	viper.AddConfigPath(".")
@@ -19,9 +19,6 @@ func Init() (*alpaca.Account, string, string, error) {
 	key := viper.GetString("APCA_API_KEY_ID")
 	secret := viper.GetString("APCA_API_SECRET_KEY")
 	endpoint := viper.GetString("ENDPOINT")
-	// key := viper.GetString("envkey_APCA_API_KEY_ID")
-	// secret := viper.GetString("envkey_APCA_API_SECRET_KEY")
-	// endpoint := viper.GetString("envkey_ENDPOINT")
 
 	client := alpaca.NewClient(alpaca.ClientOpts{
 		APIKey:    key,
@@ -31,8 +28,8 @@ func Init() (*alpaca.Account, string, string, error) {
 
 	acct, err := client.GetAccount()
 	if err != nil {
-		return nil, "null", "null", fmt.Errorf("error: 401: secret %v key %v endpoint %v", secret, key, endpoint)
+		log.Fatal("error: could not return client credentials")
 	}
 
-	return acct, key, secret, nil
+	return acct, key, secret
 }

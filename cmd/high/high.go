@@ -65,8 +65,10 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
 
 	body, _ := utils.GetRequest(key, secret, url)
-	var highestVal float64
-	var highestDate string
+	var (
+		highestVal  float64
+		highestDate string
+	)
 
 	i := 0
 	highestVal = 0.0
@@ -121,7 +123,7 @@ var HighCmd = &cobra.Command{
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		cmdArgs := os.Args[1]
-		_, key, secret, _ := config.Init()
+		_, key, secret := config.Init()
 
 		timeArg, _ := cmd.Flags().GetString("time")
 

@@ -38,7 +38,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
-		utils.CheckTickerBadChars(ticker)
+		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		LaunchChart(ticker)
 	},
