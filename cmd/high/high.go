@@ -58,6 +58,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 		}
 	}
 
+	// Refactor this to use gettickerprice func
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")

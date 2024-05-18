@@ -8,7 +8,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
@@ -21,65 +20,24 @@ var timeVal string
 
 func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs string) {
 	var (
-		startTime string
-		endTime   string
-		timeframe string
-		iterator  int
-	)
-
-	// ----------------------------
-	// refactored this out in utils
-	// ----------------------------
-
-	// Must account for iterator
-
-	curTime := time.Now()
-	switch timeVal {
-	// 1M is not working?
-	case "1M":
-		pastTimeVal := curTime.AddDate(0, -1, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1D"
-		iterator = 10
-	case "3M":
-		pastTimeVal := curTime.AddDate(0, -3, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 10
-	case "6M":
-		pastTimeVal := curTime.AddDate(0, -6, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		iterator = 6
-	case "1Y":
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		iterator = 11
-	default:
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		timeVal = "1Y"
-		iterator = 11
-	}
-
-	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
-
-	body, _ := utils.GetRequest(key, secret, url)
-	var (
 		lowestVal  float64
 		lowestDate string
 	)
 
+	t := utils.TimeAssignVals{
+		TimeVal: timeVal,
+		Ticker:  ticker,
+		Cmd:     "low",
+		UrlType: "",
+	}
+
+	u := utils.AssignTime(t)
+	url := utils.AssignUrl(t, u)
+	body, _ := utils.GetRequest(key, secret, url)
+
 	i := 0
 	lowestVal = 0.0
-	for i < iterator {
+	for i < u.Iterator {
 		arrayVal := fmt.Sprintf("[%v]", i)
 		nextLowPrice, err := jsonparser.GetFloat(body, "bars", arrayVal, "l")
 		if err != nil {
@@ -100,6 +58,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		}
 	}
 
+	// refactor this to use gettickerprice func
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -133,6 +92,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
+		// ksCmd := "low"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)

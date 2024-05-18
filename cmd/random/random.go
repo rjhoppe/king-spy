@@ -4,12 +4,8 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package random
 
 import (
-	"fmt"
-	"strings"
 	"sync"
 
-	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
 	"github.com/rjhoppe/go-compare-to-spy/config"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
@@ -51,10 +47,22 @@ to quickly create a Cobra application.`,
 		ch4 := make(chan float64)
 
 		// why are the wg
-		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "latest", ch1, &wg, ksCmd)
-		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "history", ch2, &wg, ksCmd)
-		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
-		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
+		// go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "latest", ch1, &wg, ksCmd)
+		// go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "history", ch2, &wg, ksCmd)
+		// go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
+		// go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
+
+		cfg := utils.GetTickerPriceConfig{
+			Key:    key,
+			Secret: secret,
+			Wg:     &wg,
+			Cmd:    ksCmd,
+		}
+
+		go utils.GetTickPrice(cfg, randomTick, timeVal, "latest", ch1)
+		go utils.GetTickPrice(cfg, randomTick, timeVal, "history", ch2)
+		go utils.GetTickPrice(cfg, "SPY", timeVal, "latest", ch3)
+		go utils.GetTickPrice(cfg, "SPY", timeVal, "history", ch4)
 
 		wg.Wait()
 
@@ -62,62 +70,75 @@ to quickly create a Cobra application.`,
 		spyLatest := float64(<-ch3)
 		tickerHist := float64(<-ch2)
 		tickerLatest := float64(<-ch1)
-		spyPerf := ((spyLatest - spyHist) / spyHist) * 100
-		if spyPerf > 0 {
-			spyPositive = "+"
-		} else {
-			spyPositive = ""
+
+		r := RandomOutput{
+			spyHist:      spyHist,
+			spyLatest:    spyLatest,
+			tickerHist:   tickerHist,
+			tickerLatest: tickerLatest,
+			tickerVal:    randomTick,
+			tickerName:   randomTickName,
+			timeVal:      timeVal,
 		}
 
-		tickerPerf := ((tickerLatest - tickerHist) / tickerHist) * 100
-		if tickerPerf > 0 {
-			tickerPositive = "+"
-		} else {
-			tickerPositive = ""
-		}
+		formatOutputRandom(r)
 
-		deltaPerf := tickerPerf - spyPerf
-		if deltaPerf > 0 {
-			deltaPositive = "+"
-		} else {
-			deltaPositive = ""
-		}
+		// spyPerf := ((spyLatest - spyHist) / spyHist) * 100
+		// if spyPerf > 0 {
+		// 	spyPositive = "+"
+		// } else {
+		// 	spyPositive = ""
+		// }
 
-		if spyPositive == "+" {
-			fmt.Println("")
-			spyValC := color.New(color.FgGreen)
-			spyTextC := color.YellowString("SPY")
-			fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
-			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
-		} else {
-			fmt.Println("")
-			spyValC := color.New(color.FgRed)
-			spyTextC := color.YellowString("SPY")
-			fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
-			spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
-		}
+		// tickerPerf := ((tickerLatest - tickerHist) / tickerHist) * 100
+		// if tickerPerf > 0 {
+		// 	tickerPositive = "+"
+		// } else {
+		// 	tickerPositive = ""
+		// }
 
-		if tickerPositive == "+" {
-			tickerValC := color.New(color.FgGreen)
-			fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
-			tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
-		} else {
-			tickerValC := color.New(color.FgRed)
-			fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
-			tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
-		}
+		// deltaPerf := tickerPerf - spyPerf
+		// if deltaPerf > 0 {
+		// 	deltaPositive = "+"
+		// } else {
+		// 	deltaPositive = ""
+		// }
 
-		if deltaPositive == "+" {
-			deltaC := color.New(color.FgGreen)
-			fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
-			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-			fmt.Println("")
-		} else {
-			deltaC := color.New(color.FgRed)
-			fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
-			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-			fmt.Println("")
-		}
+		// if spyPositive == "+" {
+		// 	fmt.Println("")
+		// 	spyValC := color.New(color.FgGreen)
+		// 	spyTextC := color.YellowString("SPY")
+		// 	fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
+		// 	spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
+		// } else {
+		// 	fmt.Println("")
+		// 	spyValC := color.New(color.FgRed)
+		// 	spyTextC := color.YellowString("SPY")
+		// 	fmt.Printf("%v: %v performance: ", spyTextC, timeVal)
+		// 	spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
+		// }
+
+		// if tickerPositive == "+" {
+		// 	tickerValC := color.New(color.FgGreen)
+		// 	fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
+		// 	tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
+		// } else {
+		// 	tickerValC := color.New(color.FgRed)
+		// 	fmt.Printf("%v %v: %v performance: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
+		// 	tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
+		// }
+
+		// if deltaPositive == "+" {
+		// 	deltaC := color.New(color.FgGreen)
+		// 	fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
+		// 	deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
+		// 	fmt.Println("")
+		// } else {
+		// 	deltaC := color.New(color.FgRed)
+		// 	fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(randomTickName), color.YellowString("("+strings.ToUpper(randomTick)+")"), timeVal)
+		// 	deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
+		// 	fmt.Println("")
+		// }
 	},
 }
 

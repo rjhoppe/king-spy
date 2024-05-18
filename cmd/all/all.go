@@ -50,6 +50,7 @@ var AllCmd = &cobra.Command{
 		ch5 := make(chan float64)
 		ch6 := make(chan float64)
 
+		// refactor this
 		go c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1, ksCmd)
 		go c2s.GetTickerPrice(key, secret, ticker, "1M", "history", ch2, &wg1, ksCmd)
 		go c2s.GetTickerPrice(key, secret, ticker, "6M", "history", ch3, &wg1, ksCmd)

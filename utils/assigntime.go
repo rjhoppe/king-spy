@@ -53,7 +53,7 @@ func AssignTime(t TimeAssignVals) (u UrlAssignVals) {
 		startTime = pastTimeVal.Format(time.RFC3339)
 		if t.Cmd == "high" || t.Cmd == "low" {
 			timeframe = "1M"
-			iterator = 6
+			iterator = 4
 			endTime = curTime.Format(time.RFC3339)
 		} else {
 			timeframe = ""
