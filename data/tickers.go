@@ -1,5 +1,6 @@
 package data
 
+// List of tickers used by random cmd
 var TickerData = map[string]string{
 	"AAPL":  "Apple",
 	"GOOGL": "Alphabet A",

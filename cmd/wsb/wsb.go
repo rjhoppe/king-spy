@@ -61,7 +61,8 @@ to quickly create a Cobra application.`,
 			} else {
 				sentColor = color.RedString(stocks[i].Sentiment)
 			}
-			fmt.Println(stocks[i].Ticker + " - " + sentColor + " - Comments(" + strconv.Itoa(stocks[i].No_Of_Comments) + ")")
+			spacing := formatOutput(stocks[i].Ticker)
+			fmt.Println(stocks[i].Ticker + spacing + sentColor + " - Comments(" + strconv.Itoa(stocks[i].No_Of_Comments) + ")")
 		}
 		fmt.Println("")
 	},
