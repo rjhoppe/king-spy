@@ -64,7 +64,7 @@ func AssignTime(t TimeAssignVals) (u UrlAssignVals) {
 	case "1Y":
 		pastTimeVal := curTime.AddDate(-1, 0, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)
-		if t.Cmd == "high" || t.Cmd == "low" {
+		if (t.Cmd == "high") || (t.Cmd == "low") {
 			endTime = curTime.Format(time.RFC3339)
 			timeframe = "1M"
 			iterator = 11

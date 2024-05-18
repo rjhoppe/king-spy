@@ -107,6 +107,7 @@ to quickly create a Cobra application.`,
 			fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
 			fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
 			fmt.Println("Defaulting to 1Y timeframe")
+			timeVal = "1Y"
 		} else if timeArg == "12M" {
 			timeVal = "1Y"
 		} else {
