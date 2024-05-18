@@ -12,20 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func LaunchChart(ticker string) {
-	classicUrl := "https://stockcharts.com/h-sc/ui?s="
-	newUrl := "https://stockcharts.com/sc3/ui/?s="
-
-	err := browser.OpenURL(classicUrl + ticker)
-	if err != nil {
-		err := browser.OpenURL(newUrl + ticker)
-		if err != nil {
-			panic(err)
-		}
-	}
-	fmt.Println("Launching chart in the default browser...")
-}
-
 // chartCmd represents the chart command
 var ChartCmd = &cobra.Command{
 	Use:   "chart",
@@ -54,4 +40,18 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// chartCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func LaunchChart(ticker string) {
+	classicUrl := "https://stockcharts.com/h-sc/ui?s="
+	newUrl := "https://stockcharts.com/sc3/ui/?s="
+
+	err := browser.OpenURL(classicUrl + ticker)
+	if err != nil {
+		err := browser.OpenURL(newUrl + ticker)
+		if err != nil {
+			panic(err)
+		}
+	}
+	fmt.Println("Launching chart in the default browser...")
 }

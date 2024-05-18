@@ -5,10 +5,8 @@ package c2s
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
@@ -17,6 +15,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// type TimeAssignVals struct {
+// 	timeVal string
+// 	ticker string
+// 	cmd string
+// }
+
 var (
 	spyPositive    string
 	tickerPositive string
@@ -24,51 +28,21 @@ var (
 	timeVal        string
 )
 
-func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup) {
+func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup, cmd string) {
 	wg.Add(1)
 	defer wg.Done()
-	var (
-		url       string
-		startTime string
-		endTime   string
-	)
 
-	curTime := time.Now()
-	if urlType == "history" {
-		switch timeVal {
-		case "1M":
-			pastTimeVal := curTime.AddDate(0, -1, 0)
-			startTime = pastTimeVal.Format(time.RFC3339)
-			endTimeVal := pastTimeVal.Add(72 * time.Hour)
-			endTime = endTimeVal.Format(time.RFC3339)
-		case "6M":
-			pastTimeVal := curTime.AddDate(0, -6, 0)
-			startTime = pastTimeVal.Format(time.RFC3339)
-			endTimeVal := pastTimeVal.Add(72 * time.Hour)
-			endTime = endTimeVal.Format(time.RFC3339)
-		case "1Y":
-			pastTimeVal := curTime.AddDate(-1, 0, 0)
-			startTime = pastTimeVal.Format(time.RFC3339)
-			endTimeVal := pastTimeVal.Add(72 * time.Hour)
-			endTime = endTimeVal.Format(time.RFC3339)
-		case "3Y":
-			pastTimeVal := curTime.AddDate(-3, 0, 0)
-			startTime = pastTimeVal.Format(time.RFC3339)
-			endTimeVal := pastTimeVal.Add(72 * time.Hour)
-			endTime = endTimeVal.Format(time.RFC3339)
-		// default is YTD
-		default:
-			curYear, _, _ := time.Now().Date()
-			curYearString := strconv.Itoa(curYear)
-			startTime = curYearString + "-01-01T00:00:00-00:00"
-			endTime = curTime.Format(time.RFC3339)
-		}
-		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades?limit=1&start=" + startTime + "&end=" + endTime + "&feed=iex&currency=USD"
-	} else {
-		url = "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
+	t := utils.TimeAssignVals{
+		TimeVal: timeVal,
+		Ticker:  ticker,
+		Cmd:     cmd,
+		UrlType: urlType,
 	}
 
+	u := utils.AssignTime(t)
+	url := utils.AssignUrl(t, u)
 	body, _ := utils.GetRequest(key, secret, url)
+
 	if urlType == "history" {
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
@@ -96,6 +70,7 @@ var CompareSpyCmd = &cobra.Command{
 		"  ks c2s aapl -t=1Y \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
+		ksCmd := "c2s"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		timeArg, _ := cmd.Flags().GetString("time")
@@ -113,10 +88,10 @@ var CompareSpyCmd = &cobra.Command{
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
 
-		go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, &wg)
-		go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, &wg)
-		go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg)
-		go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg)
+		go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, &wg, ksCmd)
+		go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, &wg, ksCmd)
+		go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
+		go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
 
 		wg.Wait()
 

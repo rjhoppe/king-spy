@@ -33,6 +33,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		ksCmd := "random"
 		timeArg, _ := cmd.Flags().GetString("time")
 		randomTick, randomTickName := utils.SelectRandomTicker()
 		if timeArg == "" {
@@ -41,7 +42,7 @@ to quickly create a Cobra application.`,
 			timeVal = timeArg
 		}
 
-		wg := new(sync.WaitGroup)
+		wg := sync.WaitGroup{}
 		_, key, secret := config.Init()
 
 		ch1 := make(chan float64)
@@ -49,10 +50,11 @@ to quickly create a Cobra application.`,
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
 
-		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "latest", ch1, wg)
-		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "history", ch2, wg)
-		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, wg)
-		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, wg)
+		// why are the wg
+		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "latest", ch1, &wg, ksCmd)
+		go c2s.GetTickerPrice(key, secret, randomTick, timeVal, "history", ch2, &wg, ksCmd)
+		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
+		go c2s.GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
 
 		wg.Wait()
 

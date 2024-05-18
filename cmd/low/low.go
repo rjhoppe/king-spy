@@ -26,6 +26,13 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		timeframe string
 		iterator  int
 	)
+
+	// ----------------------------
+	// refactored this out in utils
+	// ----------------------------
+
+	// Must account for iterator
+
 	curTime := time.Now()
 	switch timeVal {
 	// 1M is not working?
@@ -42,11 +49,11 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		timeframe = "1W"
 		iterator = 10
 	case "6M":
-		pastTimeVal := curTime.AddDate(0, 6, 0)
+		pastTimeVal := curTime.AddDate(0, -6, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)
 		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 22
+		timeframe = "1M"
+		iterator = 6
 	case "1Y":
 		pastTimeVal := curTime.AddDate(-1, 0, 0)
 		startTime = pastTimeVal.Format(time.RFC3339)

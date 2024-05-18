@@ -26,31 +26,6 @@ var (
 	deltaPositive  string
 )
 
-func GetPerf(tickerLatest float64, tickerHistPrice float64, ch chan float64, wg *sync.WaitGroup) {
-	wg.Add(1)
-	defer wg.Done()
-	tickVal := ((tickerLatest - tickerHistPrice) / tickerHistPrice) * 100
-	ch <- tickVal
-}
-
-func returnTickerPerf(tickerPerf float64, ticker string, timeVal string) {
-	if tickerPerf > 0 {
-		tickerPositive = "+"
-	} else {
-		tickerPositive = ""
-	}
-
-	if tickerPositive == "+" {
-		tickerC := color.New(color.FgGreen)
-		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
-		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
-	} else {
-		tickerC := color.New(color.FgRed)
-		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
-		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
-	}
-}
-
 // allCmd represents the all command
 var AllCmd = &cobra.Command{
 	Use:     "all",
@@ -58,6 +33,7 @@ var AllCmd = &cobra.Command{
 	Long:    `This command packages cmds c2s, high, low, and news together for a single ticker and returns the results`,
 	Example: "  ks all aapl",
 	Run: func(cmd *cobra.Command, args []string) {
+		ksCmd := "all"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
@@ -74,12 +50,12 @@ var AllCmd = &cobra.Command{
 		ch5 := make(chan float64)
 		ch6 := make(chan float64)
 
-		go c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1)
-		go c2s.GetTickerPrice(key, secret, ticker, "1M", "history", ch2, &wg1)
-		go c2s.GetTickerPrice(key, secret, ticker, "6M", "history", ch3, &wg1)
-		go c2s.GetTickerPrice(key, secret, ticker, "1Y", "history", ch4, &wg1)
-		go c2s.GetTickerPrice(key, secret, "SPY", "NA", "latest", ch5, &wg1)
-		go c2s.GetTickerPrice(key, secret, "SPY", "1Y", "history", ch6, &wg1)
+		go c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1, ksCmd)
+		go c2s.GetTickerPrice(key, secret, ticker, "1M", "history", ch2, &wg1, ksCmd)
+		go c2s.GetTickerPrice(key, secret, ticker, "6M", "history", ch3, &wg1, ksCmd)
+		go c2s.GetTickerPrice(key, secret, ticker, "1Y", "history", ch4, &wg1, ksCmd)
+		go c2s.GetTickerPrice(key, secret, "SPY", "NA", "latest", ch5, &wg1, ksCmd)
+		go c2s.GetTickerPrice(key, secret, "SPY", "1Y", "history", ch6, &wg1, ksCmd)
 
 		wg1.Wait()
 
@@ -175,4 +151,29 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// allCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func GetPerf(tickerLatest float64, tickerHistPrice float64, ch chan float64, wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
+	tickVal := ((tickerLatest - tickerHistPrice) / tickerHistPrice) * 100
+	ch <- tickVal
+}
+
+func returnTickerPerf(tickerPerf float64, ticker string, timeVal string) {
+	if tickerPerf > 0 {
+		tickerPositive = "+"
+	} else {
+		tickerPositive = ""
+	}
+
+	if tickerPositive == "+" {
+		tickerC := color.New(color.FgGreen)
+		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
+		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
+	} else {
+		tickerC := color.New(color.FgRed)
+		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(ticker)), timeVal)
+		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
+	}
 }
