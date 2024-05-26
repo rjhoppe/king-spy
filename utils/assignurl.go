@@ -11,9 +11,9 @@ func AssignUrl(t TimeAssignVals, u UrlAssignVals) (url string) {
 			url = "https://data.alpaca.markets/v2/stocks/" + t.Ticker + "/trades/latest?feed=iex"
 		}
 	case "high":
-		url = "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(t.Ticker) + "/bars?timeframe=" + u.Timeframe + "&start=" + u.StartTime + "&end=" + u.EndTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
+		url = "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(t.Ticker) + "/bars?timeframe=" + u.Timeframe + "&start=" + u.StartTime + "&end=" + u.EndTime + "&adjustment=raw&feed=iex&sort=asc"
 	case "low":
-		url = "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(t.Ticker) + "/bars?timeframe=" + u.Timeframe + "&start=" + u.StartTime + "&end=" + u.EndTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
+		url = "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(t.Ticker) + "/bars?timeframe=" + u.Timeframe + "&start=" + u.StartTime + "&end=" + u.EndTime + "&adjustment=raw&feed=iex&sort=asc"
 	}
 
 	return url

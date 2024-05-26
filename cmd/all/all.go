@@ -10,7 +10,6 @@ import (
 	"sync"
 
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
@@ -50,13 +49,19 @@ var AllCmd = &cobra.Command{
 		ch5 := make(chan float64)
 		ch6 := make(chan float64)
 
-		// refactor this
-		go c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1, ksCmd)
-		go c2s.GetTickerPrice(key, secret, ticker, "1M", "history", ch2, &wg1, ksCmd)
-		go c2s.GetTickerPrice(key, secret, ticker, "6M", "history", ch3, &wg1, ksCmd)
-		go c2s.GetTickerPrice(key, secret, ticker, "1Y", "history", ch4, &wg1, ksCmd)
-		go c2s.GetTickerPrice(key, secret, "SPY", "NA", "latest", ch5, &wg1, ksCmd)
-		go c2s.GetTickerPrice(key, secret, "SPY", "1Y", "history", ch6, &wg1, ksCmd)
+		cfg := utils.GetTickerPriceConfig{
+			Key:    key,
+			Secret: secret,
+			Wg:     &wg1,
+			Cmd:    ksCmd,
+		}
+
+		go utils.GetTickPrice(cfg, ticker, "NA", "latest", ch1)
+		go utils.GetTickPrice(cfg, ticker, "1M", "history", ch2)
+		go utils.GetTickPrice(cfg, ticker, "6M", "history", ch3)
+		go utils.GetTickPrice(cfg, ticker, "1Y", "history", ch4)
+		go utils.GetTickPrice(cfg, "SPY", "NA", "latest", ch5)
+		go utils.GetTickPrice(cfg, "SPY", "1Y", "history", ch6)
 
 		wg1.Wait()
 
@@ -87,48 +92,18 @@ var AllCmd = &cobra.Command{
 		spyPerf := float64(<-ch10)
 
 		fmt.Println("")
-		fmt.Printf("%v latest price: $%v \n", color.YellowString(strings.ToUpper(ticker)), tickerLatest)
+		fmt.Printf("%v latest price:   $%v \n", color.YellowString(strings.ToUpper(ticker)), tickerLatest)
 		returnTickerPerf(ticker1MPerf, ticker, "1M")
 		returnTickerPerf(ticker6MPerf, ticker, "6M")
 		returnTickerPerf(ticker1YPerf, ticker, "1Y")
 
-		if spyPerf > 0 {
-			spyPositive = "+"
-		} else {
-			spyPositive = ""
+		inputs := AllInputs{
+			spyPerf:      spyPerf,
+			ticker1YPerf: ticker1YPerf,
+			ticker:       ticker,
 		}
 
-		deltaPerf := ticker1YPerf - spyPerf
-		if deltaPerf > 0 {
-			deltaPositive = "+"
-		} else {
-			deltaPositive = ""
-		}
-
-		if spyPositive == "+" {
-			spyC := color.New(color.FgGreen)
-			spyTextC := color.YellowString("SPY")
-			fmt.Println("")
-			fmt.Printf("%v 1Y performance: ", spyTextC)
-			spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
-		} else {
-			spyC := color.New(color.FgRed)
-			spyTextC := color.YellowString("SPY")
-			fmt.Println("")
-			fmt.Printf("%v 1Y performance: ", spyTextC)
-			spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
-		}
-
-		if deltaPositive == "+" {
-			deltaC := color.New(color.FgGreen)
-			fmt.Printf("%v 1Y performance vs SPY: ", color.YellowString(strings.ToUpper(ticker)))
-			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		} else {
-			deltaC := color.New(color.FgRed)
-			fmt.Printf("%v 1Y performance vs SPY: ", color.YellowString(strings.ToUpper(ticker)))
-			deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		}
-
+		FormatAll(inputs)
 		low.GetLow(key, secret, ticker, "1Y", cmdArgs)
 		high.GetHigh(key, secret, ticker, "1Y", cmdArgs)
 		news.GetNews(key, secret, ticker, cmdArgs)

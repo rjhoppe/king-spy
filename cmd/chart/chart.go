@@ -46,6 +46,7 @@ func LaunchChart(ticker string) {
 	classicUrl := "https://stockcharts.com/h-sc/ui?s="
 	newUrl := "https://stockcharts.com/sc3/ui/?s="
 
+	fmt.Println("Launching chart in the default browser...")
 	err := browser.OpenURL(classicUrl + ticker)
 	if err != nil {
 		err := browser.OpenURL(newUrl + ticker)
@@ -53,5 +54,6 @@ func LaunchChart(ticker string) {
 			panic(err)
 		}
 	}
-	fmt.Println("Launching chart in the default browser...")
+
+	// timeout where program closes browser?
 }

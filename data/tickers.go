@@ -190,4 +190,7 @@ var TickerData = map[string]string{
 	"PNC":   "PNC Financial",
 	"LTC":   "LTC Properties",
 	"TXN":   "Texas Instruments",
+	"TT":    "Trane Technologies",
+	"CEG":   "Constellation Energy",
+	"LRCX":  "Lam Research",
 }
