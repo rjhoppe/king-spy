@@ -6,9 +6,7 @@ package low
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
@@ -21,58 +19,24 @@ var timeVal string
 
 func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs string) {
 	var (
-		startTime string
-		endTime   string
-		timeframe string
-		iterator  int
-	)
-	curTime := time.Now()
-	switch timeVal {
-	// 1M is not working?
-	case "1M":
-		pastTimeVal := curTime.AddDate(0, -1, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1D"
-		iterator = 10
-	case "3M":
-		pastTimeVal := curTime.AddDate(0, -3, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 10
-	case "6M":
-		pastTimeVal := curTime.AddDate(0, 6, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 22
-	case "1Y":
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		iterator = 11
-	default:
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		timeVal = "1Y"
-		iterator = 11
-	}
-
-	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
-
-	body, _ := utils.GetRequest(key, secret, url)
-	var (
 		lowestVal  float64
 		lowestDate string
 	)
 
+	t := utils.TimeAssignVals{
+		TimeVal: timeVal,
+		Ticker:  ticker,
+		Cmd:     "low",
+		UrlType: "",
+	}
+
+	u := utils.AssignTime(t)
+	url := utils.AssignUrl(t, u)
+	body, _ := utils.GetRequest(key, secret, url)
+
 	i := 0
 	lowestVal = 0.0
-	for i < iterator {
+	for i < u.Iterator {
 		arrayVal := fmt.Sprintf("[%v]", i)
 		nextLowPrice, err := jsonparser.GetFloat(body, "bars", arrayVal, "l")
 		if err != nil {
@@ -93,6 +57,7 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		}
 	}
 
+	// refactor this to use gettickerprice func
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -103,13 +68,26 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	priceDiff := (curPrice - lowestVal)
 	percDiff := (priceDiff / lowestVal) * 100
 
-	if cmdArgs == "low" {
-		fmt.Println("")
+	l := LowOutput{
+		ticker:     ticker,
+		timeVal:    timeVal,
+		priceDiff:  priceDiff,
+		lowestVal:  lowestVal,
+		lowestDate: lowestDate,
+		percDiff:   percDiff,
+		cmdArgs:    cmdArgs,
 	}
 
-	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
-	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	fmt.Println("")
+	formatOutputLow(l)
+
+	// if cmdArgs == "low" {
+	// 	fmt.Println("")
+	// }
+
+	// fmt.Println("==================================================================================")
+	// fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
+	// fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
+	// fmt.Println("==================================================================================")
 	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(higestVal, 'f', 2, 64)), highestDate[:10])
 	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 }
@@ -126,6 +104,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
+		// ksCmd := "low"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
@@ -140,6 +119,7 @@ to quickly create a Cobra application.`,
 			fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
 			fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
 			fmt.Println("Defaulting to 1Y timeframe")
+			timeVal = "1Y"
 		} else if timeArg == "12M" {
 			timeVal = "1Y"
 		} else {

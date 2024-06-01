@@ -16,36 +16,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func GetNews(key string, secret string, ticker string, cmdArgs string) {
-	url := "https://data.alpaca.markets/v1beta1/news?symbols=" + strings.ToUpper(ticker)
-	body, _ := utils.GetRequest(key, secret, url)
-	headline := make([]string, 0)
-
-	i := 0
-	for i < 6 {
-		arrayVal := fmt.Sprintf("[%v]", i)
-		nextHeadline, err := jsonparser.GetString(body, "news", arrayVal, "headline")
-		if err != nil {
-			fmt.Printf("Error: Could not parse news source. %v", err)
-			panic(err)
-		} else {
-			headline = append(headline, nextHeadline)
-			i++
-		}
-	}
-
-	if cmdArgs == "news" {
-		fmt.Println("")
-	}
-
-	for i := 1; i < len(headline); i++ {
-		j := strconv.Itoa(i)
-		fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
-		fmt.Println("")
-	}
-	fmt.Println("")
-}
-
 // newsCmd represents the news command
 var NewsCmd = &cobra.Command{
 	Use:   "news",
@@ -72,4 +42,40 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// newsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func GetNews(key string, secret string, ticker string, cmdArgs string) {
+	url := "https://data.alpaca.markets/v1beta1/news?symbols=" + strings.ToUpper(ticker)
+	body, _ := utils.GetRequest(key, secret, url)
+	headline := make([]string, 0)
+
+	i := 0
+	for i < 6 {
+		arrayVal := fmt.Sprintf("[%v]", i)
+		nextHeadline, err := jsonparser.GetString(body, "news", arrayVal, "headline")
+		if err != nil {
+			fmt.Printf("Error: Could not parse news source. %v", err)
+			panic(err)
+		} else {
+			headline = append(headline, nextHeadline)
+			i++
+		}
+	}
+
+	if cmdArgs == "news" {
+		fmt.Println("")
+	}
+
+	fmt.Printf("%v %v \n", color.YellowString(strings.ToUpper(ticker)), color.YellowString("News"))
+	fmt.Println("==================================================================================")
+	for i := 1; i < len(headline); i++ {
+		j := strconv.Itoa(i)
+		if len(headline[i]) > 65 {
+			fmt.Printf("%v %v: %v...", color.YellowString("Headline"), color.YellowString(j), headline[i][:65])
+		} else {
+			fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
+		}
+		fmt.Println("")
+	}
+	fmt.Println("==================================================================================")
 }

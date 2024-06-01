@@ -6,9 +6,7 @@ package high
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
@@ -21,58 +19,24 @@ var timeVal string
 
 func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs string) {
 	var (
-		startTime string
-		endTime   string
-		timeframe string
-		iterator  int
-	)
-
-	curTime := time.Now()
-	switch timeVal {
-	case "1M":
-		pastTimeVal := curTime.AddDate(0, -1, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1D"
-		iterator = 10
-	case "3M":
-		pastTimeVal := curTime.AddDate(0, -3, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 10
-	case "6M":
-		pastTimeVal := curTime.AddDate(0, 6, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1W"
-		iterator = 22
-	case "1Y":
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		iterator = 11
-	default:
-		pastTimeVal := curTime.AddDate(-1, 0, 0)
-		startTime = pastTimeVal.Format(time.RFC3339)
-		endTime = curTime.Format(time.RFC3339)
-		timeframe = "1M"
-		timeVal = "1Y"
-		iterator = 11
-	}
-
-	url := "https://data.alpaca.markets/v2/stocks/" + strings.ToUpper(ticker) + "/bars?timeframe=" + timeframe + "&start=" + startTime + "&end=" + endTime + "&limit=11&adjustment=raw&feed=iex&sort=asc"
-
-	body, _ := utils.GetRequest(key, secret, url)
-	var (
 		highestVal  float64
 		highestDate string
 	)
 
+	t := utils.TimeAssignVals{
+		TimeVal: timeVal,
+		Ticker:  ticker,
+		Cmd:     "high",
+		UrlType: "",
+	}
+
+	u := utils.AssignTime(t)
+	url := utils.AssignUrl(t, u)
+	body, _ := utils.GetRequest(key, secret, url)
+
 	i := 0
 	highestVal = 0.0
-	for i < iterator {
+	for i < u.Iterator {
 		arrayVal := fmt.Sprintf("[%v]", i)
 		nextHighPrice, err := jsonparser.GetFloat(body, "bars", arrayVal, "h")
 		if err != nil {
@@ -93,6 +57,8 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 		}
 	}
 
+	// Refactor this to use gettickerprice func
+	// is this really necessary?
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -104,13 +70,24 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	percDiff := (priceDiff / highestVal) * 100
 	// priceColor := color.New(color.FgRed)
 
-	if cmdArgs == "high" {
-		fmt.Println("")
+	h := HighOutput{
+		ticker:      ticker,
+		timeVal:     timeVal,
+		priceDiff:   priceDiff,
+		highestVal:  highestVal,
+		highestDate: highestDate,
+		percDiff:    percDiff,
+		cmdArgs:     cmdArgs,
 	}
 
-	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
-	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	fmt.Println("")
+	formatOutputHigh(h)
+	// if cmdArgs == "high" {
+	// 	fmt.Println("")
+	// }
+	// fmt.Println("==================================================================================")
+	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
+	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
+	// fmt.Println("==================================================================================")
 }
 
 // highCmd represents the high command
@@ -119,6 +96,7 @@ var HighCmd = &cobra.Command{
 	Short: "Returns a ticker's percentage and dollar decrease from a recent high",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		// ksCmd := "high"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
@@ -133,6 +111,7 @@ var HighCmd = &cobra.Command{
 			fmt.Printf("Timeframe not recognized or not provided. Use the %v flag to provide a timeframe. \n", flagVal)
 			fmt.Println("The recognized timeframes are: 3Y, 1Y, 6M, 3M, 1M")
 			fmt.Println("Defaulting to 1Y timeframe.")
+			timeVal = "1Y"
 		} else if timeArg == "12M" {
 			timeVal = "1Y"
 		} else {
@@ -140,6 +119,7 @@ var HighCmd = &cobra.Command{
 		}
 
 		GetHigh(key, secret, ticker, timeVal, cmdArgs)
+		// c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1, ksCmd)
 	},
 }
 

@@ -55,15 +55,18 @@ to quickly create a Cobra application.`,
 		}
 
 		fmt.Println("")
+		fmt.Printf("%v \n", color.YellowString("WSB Leaderboard"))
+		fmt.Println("=================================")
 		for i := range stocks[:10] {
 			if stocks[i].Sentiment == "Bullish" {
 				sentColor = color.GreenString(stocks[i].Sentiment)
 			} else {
 				sentColor = color.RedString(stocks[i].Sentiment)
 			}
-			fmt.Println(stocks[i].Ticker + " - " + sentColor + " - Comments(" + strconv.Itoa(stocks[i].No_Of_Comments) + ")")
+			spacing := formatOutput(stocks[i].Ticker)
+			fmt.Println(stocks[i].Ticker + spacing + sentColor + " - Comments(" + strconv.Itoa(stocks[i].No_Of_Comments) + ")")
 		}
-		fmt.Println("")
+		fmt.Println("=================================")
 	},
 }
 

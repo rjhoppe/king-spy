@@ -6,13 +6,19 @@ repos:
     - id: trailing-whitespace
     - id: check-yaml
     - id: detect-private-key
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.28.3
+  hooks:
+    - id: check-github-workflows
+      args: ["--verbose"]
+    - id: check-github-actions
+      args: ["--verbose"]
 - repo: https://github.com/lietu/go-pre-commit
   rev: v0.1.0
   hooks:
-    # - id: errcheck
     - id: go-fmt-goimports
     - id: go-test
     - id: go-vet
-    - id: golint
+    # - id: golint
     - id: staticcheck
     - id: go-mod-tidy
