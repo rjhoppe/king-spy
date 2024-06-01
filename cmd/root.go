@@ -10,6 +10,7 @@ import (
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/all"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/c2t"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
@@ -63,7 +64,8 @@ func Execute() {
 }
 
 func addSubcommandPalettes() {
-	rootCmd.AddCommand(c2s.CompareSpyCmd)
+	rootCmd.AddCommand(c2s.Compare2SpyCmd)
+	rootCmd.AddCommand(c2t.Compare2TickerCmd)
 	rootCmd.AddCommand(news.NewsCmd)
 	rootCmd.AddCommand(low.LowCmd)
 	rootCmd.AddCommand(high.HighCmd)

@@ -5,6 +5,7 @@ package c2s
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/buger/jsonparser"
@@ -21,7 +22,7 @@ var (
 )
 
 // compareSpyCmd represents the compareSpy command
-var CompareSpyCmd = &cobra.Command{
+var Compare2SpyCmd = &cobra.Command{
 	Use:   "c2s",
 	Short: "Compares a ticker's performance to the SP500 over a specified time period",
 	Long:  ``,
@@ -33,6 +34,7 @@ var CompareSpyCmd = &cobra.Command{
 		ksCmd := "c2s"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
+		ticker = strings.ToLower(ticker)
 		timeArg, _ := cmd.Flags().GetString("time")
 		if timeArg == "" {
 			timeVal = "YTD"
@@ -89,7 +91,7 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	CompareSpyCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
+	Compare2SpyCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

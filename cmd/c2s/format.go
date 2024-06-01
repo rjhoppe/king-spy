@@ -41,13 +41,19 @@ func formatOutputC2S(o Output) {
 	if spyPositive == "+" {
 		spyC := color.New(color.FgGreen)
 		spyTextC := color.YellowString("SPY")
+		// tickerTextC := color.YellowString("VS " + strings.ToUpper(o.tickerVal))
 		fmt.Println("")
+		// fmt.Printf("%v %v \n", spyTextC, tickerTextC)
+		fmt.Println("==================================================================================")
 		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	} else {
 		spyC := color.New(color.FgRed)
 		spyTextC := color.YellowString("SPY")
+		// tickerTextC := color.YellowString("VS " + strings.ToUpper(o.tickerVal))
 		fmt.Println("")
+		// fmt.Printf("%v %v \n", spyTextC, tickerTextC)
+		fmt.Println("==================================================================================")
 		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	}
@@ -66,11 +72,10 @@ func formatOutputC2S(o Output) {
 		deltaC := color.New(color.FgGreen)
 		fmt.Printf("%v %v performance vs SPY: ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		fmt.Println("")
 	} else {
 		deltaC := color.New(color.FgRed)
 		fmt.Printf("%v %v performance vs SPY: ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		fmt.Println("")
 	}
+	fmt.Println("==================================================================================")
 }
