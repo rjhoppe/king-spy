@@ -109,6 +109,7 @@ func GetTickerPrice(key string, secret string, ticker string, timeVal string, ur
 
 	u := utils.AssignTime(t)
 	url := utils.AssignUrl(t, u)
+	fmt.Println(url)
 	body, _ := utils.GetRequest(key, secret, url)
 
 	if urlType == "history" {

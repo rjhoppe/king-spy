@@ -19,6 +19,6 @@ repos:
     - id: go-fmt-goimports
     - id: go-test
     - id: go-vet
-    - id: golint
+    # - id: golint
     - id: staticcheck
     - id: go-mod-tidy

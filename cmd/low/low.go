@@ -6,7 +6,6 @@ package low
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/buger/jsonparser"
@@ -69,13 +68,26 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	priceDiff := (curPrice - lowestVal)
 	percDiff := (priceDiff / lowestVal) * 100
 
-	if cmdArgs == "low" {
-		fmt.Println("")
+	l := LowOutput{
+		ticker:     ticker,
+		timeVal:    timeVal,
+		priceDiff:  priceDiff,
+		lowestVal:  lowestVal,
+		lowestDate: lowestDate,
+		percDiff:   percDiff,
+		cmdArgs:    cmdArgs,
 	}
 
-	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
-	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	fmt.Println("")
+	formatOutputLow(l)
+
+	// if cmdArgs == "low" {
+	// 	fmt.Println("")
+	// }
+
+	// fmt.Println("==================================================================================")
+	// fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
+	// fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
+	// fmt.Println("==================================================================================")
 	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(higestVal, 'f', 2, 64)), highestDate[:10])
 	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 }

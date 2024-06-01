@@ -6,7 +6,6 @@ package high
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/buger/jsonparser"
@@ -59,6 +58,7 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	}
 
 	// Refactor this to use gettickerprice func
+	// is this really necessary?
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -70,13 +70,24 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	percDiff := (priceDiff / highestVal) * 100
 	// priceColor := color.New(color.FgRed)
 
-	if cmdArgs == "high" {
-		fmt.Println("")
+	h := HighOutput{
+		ticker:      ticker,
+		timeVal:     timeVal,
+		priceDiff:   priceDiff,
+		highestVal:  highestVal,
+		highestDate: highestDate,
+		percDiff:    percDiff,
+		cmdArgs:     cmdArgs,
 	}
 
-	fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
-	fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	fmt.Println("")
+	formatOutputHigh(h)
+	// if cmdArgs == "high" {
+	// 	fmt.Println("")
+	// }
+	// fmt.Println("==================================================================================")
+	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
+	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
+	// fmt.Println("==================================================================================")
 }
 
 // highCmd represents the high command

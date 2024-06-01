@@ -41,12 +41,14 @@ func formatOutputRandom(r RandomOutput) {
 
 	if spyPositive == "+" {
 		fmt.Println("")
+		fmt.Println("==================================================================================")
 		spyValC := color.New(color.FgGreen)
 		spyTextC := color.YellowString("SPY")
 		fmt.Printf("%v: %v performance: ", spyTextC, r.timeVal)
 		spyValC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	} else {
 		fmt.Println("")
+		fmt.Println("==================================================================================")
 		spyValC := color.New(color.FgRed)
 		spyTextC := color.YellowString("SPY")
 		fmt.Printf("%v: %v performance: ", spyTextC, r.timeVal)
@@ -67,11 +69,11 @@ func formatOutputRandom(r RandomOutput) {
 		deltaC := color.New(color.FgGreen)
 		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		fmt.Println("")
+		fmt.Println("==================================================================================")
 	} else {
 		deltaC := color.New(color.FgRed)
 		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
-		fmt.Println("")
+		fmt.Println("==================================================================================")
 	}
 }

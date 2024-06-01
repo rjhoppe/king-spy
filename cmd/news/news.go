@@ -66,10 +66,16 @@ func GetNews(key string, secret string, ticker string, cmdArgs string) {
 		fmt.Println("")
 	}
 
+	fmt.Printf("%v %v \n", color.YellowString(strings.ToUpper(ticker)), color.YellowString("News"))
+	fmt.Println("==================================================================================")
 	for i := 1; i < len(headline); i++ {
 		j := strconv.Itoa(i)
-		fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
+		if len(headline[i]) > 65 {
+			fmt.Printf("%v %v: %v...", color.YellowString("Headline"), color.YellowString(j), headline[i][:65])
+		} else {
+			fmt.Printf("%v %v: %v", color.YellowString("Headline"), color.YellowString(j), headline[i])
+		}
 		fmt.Println("")
 	}
-	fmt.Println("")
+	fmt.Println("==================================================================================")
 }
