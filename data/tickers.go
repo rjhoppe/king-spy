@@ -193,4 +193,6 @@ var TickerData = map[string]string{
 	"TT":    "Trane Technologies",
 	"CEG":   "Constellation Energy",
 	"LRCX":  "Lam Research",
+	"GME":   "GameStop Corp",
+	"AMC":   "AMC Entertainment Holdings Inc",
 }
