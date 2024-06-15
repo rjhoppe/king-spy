@@ -16,6 +16,7 @@ import (
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/random"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/sectors"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/wsb"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
@@ -33,6 +34,7 @@ var rootCmd = &cobra.Command{
 	// Example: "example [sub command]",
 	Example: "  ks all aapl -t=1M \n" +
 		"  ks c2s aapl -t=1Y \n" +
+		"  ks c2t nvda amd -t=6M \n" +
 		"  ks chart aapl \n" +
 		"  ks high aapl \n" +
 		"  ks low aapl \n" +
@@ -73,6 +75,7 @@ func addSubcommandPalettes() {
 	rootCmd.AddCommand(chart.ChartCmd)
 	rootCmd.AddCommand(all.AllCmd)
 	rootCmd.AddCommand(wsb.WsbCmd)
+	rootCmd.AddCommand(sectors.SectorsCmd)
 }
 
 func init() {

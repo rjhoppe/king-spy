@@ -42,16 +42,15 @@ func formatOutputC2T(to TickersOutput) {
 	ticker1Spaces := tickerSpacing(to.ticker1Val)
 	ticker2Spaces := tickerSpacing(to.ticker2Val)
 
+	fmt.Println("")
+	fmt.Println(color.YellowString(strings.ToUpper(to.ticker1Val) + " VS " + strings.ToUpper(to.ticker2Val) + " " + to.timeVal + " PERFORMANCE"))
 	if ticker1Positive == "+" {
 		ticker1C := color.New(color.FgGreen)
-		fmt.Println("")
-		fmt.Println(color.YellowString(to.timeVal + " PERFORMANCE"))
 		fmt.Println("==================================================================================")
 		fmt.Printf("%v: %v", color.YellowString(strings.ToUpper(to.ticker1Val)), ticker1Spaces)
 		ticker1C.Printf("%v%.2f%% \n", ticker1Positive, ticker1Perf)
 	} else {
 		ticker1C := color.New(color.FgRed)
-		fmt.Println("")
 		fmt.Println("==================================================================================")
 		fmt.Printf("%v: %v", color.YellowString(strings.ToUpper(to.ticker1Val)), ticker1Spaces)
 		ticker1C.Printf("%v%.2f%% \n", ticker1Positive, ticker1Perf)
