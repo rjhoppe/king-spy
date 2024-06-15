@@ -2,6 +2,8 @@ package utils
 
 import (
 	"fmt"
+	"log"
+	"strings"
 	"sync"
 
 	"github.com/buger/jsonparser"
@@ -32,15 +34,17 @@ func GetTickPrice(cfg GetTickerPriceConfig, ticker string, timeVal string, urlTy
 	if urlType == "history" {
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
-			fmt.Printf("Error: Could not parse ticker asking price. %v %v", err, ticker)
-			panic(err)
+			fmt.Println("")
+			fmt.Printf("Data retrieval error: ensure ticker: %v has existed longer than timeframe \n", strings.ToUpper(ticker))
+			log.Fatal(err)
 		}
 		ch <- tickerPrice
 	} else {
 		tickerPrice, err := jsonparser.GetFloat(body, "trade", "p")
 		if err != nil {
-			fmt.Printf("Error: Could not parse ticker asking price. %v %v", err, ticker)
-			panic(err)
+			fmt.Println("")
+			fmt.Printf("Data retrieval error: ensure ticker: %v has existed longer than timeframe \n", strings.ToUpper(ticker))
+			log.Fatal(err)
 		}
 		ch <- tickerPrice
 	}

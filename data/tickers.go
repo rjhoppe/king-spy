@@ -122,7 +122,7 @@ var TickerData = map[string]string{
 	"A":     "Agilent Technologies",
 	"NOW":   "ServiceNow Inc",
 	"HPQ":   "HP Inc",
-	"DE":    "Deere&Company",
+	"DE":    "Deere & Co",
 	"TSCO":  "Tractor Supply",
 	"POOL":  "Pool",
 	"LULU":  "Lululemon Athletica",

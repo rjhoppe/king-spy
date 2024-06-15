@@ -92,6 +92,8 @@ var AllCmd = &cobra.Command{
 		spyPerf := float64(<-ch10)
 
 		fmt.Println("")
+		fmt.Printf("%v %v \n", color.YellowString(strings.ToUpper(ticker)), color.YellowString("Performance Overview"))
+		fmt.Println("==================================================================================")
 		fmt.Printf("%v latest price:   $%v \n", color.YellowString(strings.ToUpper(ticker)), tickerLatest)
 		returnTickerPerf(ticker1MPerf, ticker, "1M")
 		returnTickerPerf(ticker6MPerf, ticker, "6M")
@@ -107,6 +109,7 @@ var AllCmd = &cobra.Command{
 		low.GetLow(key, secret, ticker, "1Y", cmdArgs)
 		high.GetHigh(key, secret, ticker, "1Y", cmdArgs)
 		news.GetNews(key, secret, ticker, cmdArgs)
+		// utils.Compare2Sectors(cfg, "1Y")
 
 		if chartFlag {
 			chart.LaunchChart(ticker)

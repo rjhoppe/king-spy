@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"strings"
 
@@ -44,6 +45,8 @@ func TickerValidation(ticker string) {
 
 	err = IsTickerValid(ticker)
 	if err != nil {
+		fmt.Printf("Ticker validation error: ensure ticker: %v has exists \n", strings.ToUpper(ticker))
+		fmt.Println("Check spelling and ensure that the ticker is currently listed on the NYSE")
 		log.Fatal(err)
 	}
 }

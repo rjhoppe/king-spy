@@ -41,6 +41,7 @@ func formatOutputRandom(r RandomOutput) {
 
 	if spyPositive == "+" {
 		fmt.Println("")
+		fmt.Printf("%v %v \n", color.YellowString("Random Ticker:"), color.YellowString(r.tickerName+" "+"["+r.tickerVal+"]"))
 		fmt.Println("==================================================================================")
 		spyValC := color.New(color.FgGreen)
 		spyTextC := color.YellowString("SPY")
@@ -57,22 +58,22 @@ func formatOutputRandom(r RandomOutput) {
 
 	if tickerPositive == "+" {
 		tickerValC := color.New(color.FgGreen)
-		fmt.Printf("%v %v: %v performance: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
+		fmt.Printf("%v %v: %v performance: ", color.YellowString(r.tickerName), color.YellowString("["+strings.ToUpper(r.tickerVal)+"]"), r.timeVal)
 		tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 	} else {
 		tickerValC := color.New(color.FgRed)
-		fmt.Printf("%v %v: %v performance: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
+		fmt.Printf("%v %v: %v performance: ", color.YellowString(r.tickerName), color.YellowString("["+strings.ToUpper(r.tickerVal)+"]"), r.timeVal)
 		tickerValC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 	}
 
 	if deltaPositive == "+" {
 		deltaC := color.New(color.FgGreen)
-		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
+		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("["+strings.ToUpper(r.tickerVal)+"]"), r.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 		fmt.Println("==================================================================================")
 	} else {
 		deltaC := color.New(color.FgRed)
-		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("("+strings.ToUpper(r.tickerVal)+")"), r.timeVal)
+		fmt.Printf("%v %v: %v performance vs SPY: ", color.YellowString(r.tickerName), color.YellowString("["+strings.ToUpper(r.tickerVal)+"]"), r.timeVal)
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 		fmt.Println("==================================================================================")
 	}

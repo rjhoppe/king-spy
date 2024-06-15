@@ -21,10 +21,16 @@ type LowOutput struct {
 func formatOutputLow(l LowOutput) {
 	if l.cmdArgs == "low" {
 		fmt.Println("")
+	} else if l.cmdArgs == "all" {
+		fmt.Println("")
+		fmt.Println(color.YellowString("Low / High Analysis"))
 	}
 
 	fmt.Println("==================================================================================")
 	fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(l.ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(l.lowestVal, 'f', 2, 64)), l.lowestDate[:10])
 	fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(l.priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(l.percDiff, 'f', 2, 64)+"%"))
+	if l.cmdArgs == "all" {
+		return
+	}
 	fmt.Println("==================================================================================")
 }

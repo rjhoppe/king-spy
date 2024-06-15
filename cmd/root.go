@@ -10,11 +10,13 @@ import (
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/all"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/c2s"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/c2t"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/random"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/sectors"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/wsb"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
@@ -32,6 +34,7 @@ var rootCmd = &cobra.Command{
 	// Example: "example [sub command]",
 	Example: "  ks all aapl -t=1M \n" +
 		"  ks c2s aapl -t=1Y \n" +
+		"  ks c2t nvda amd -t=6M \n" +
 		"  ks chart aapl \n" +
 		"  ks high aapl \n" +
 		"  ks low aapl \n" +
@@ -63,7 +66,8 @@ func Execute() {
 }
 
 func addSubcommandPalettes() {
-	rootCmd.AddCommand(c2s.CompareSpyCmd)
+	rootCmd.AddCommand(c2s.Compare2SpyCmd)
+	rootCmd.AddCommand(c2t.Compare2TickerCmd)
 	rootCmd.AddCommand(news.NewsCmd)
 	rootCmd.AddCommand(low.LowCmd)
 	rootCmd.AddCommand(high.HighCmd)
@@ -71,6 +75,7 @@ func addSubcommandPalettes() {
 	rootCmd.AddCommand(chart.ChartCmd)
 	rootCmd.AddCommand(all.AllCmd)
 	rootCmd.AddCommand(wsb.WsbCmd)
+	rootCmd.AddCommand(sectors.SectorsCmd)
 }
 
 func init() {

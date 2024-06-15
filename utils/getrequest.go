@@ -20,6 +20,7 @@ func GetRequest(key string, secret string, url string) (body []byte, err error) 
 		return nil, errors.New("error: unknown error occurred")
 	}
 
+	// Not sure this is necessary anymore after implementing ticker validation
 	if res.StatusCode == 404 {
 		return nil, errors.New("error: invalid ticker - ticker not found")
 	}

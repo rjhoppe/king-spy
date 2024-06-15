@@ -4,7 +4,7 @@ import "strings"
 
 func AssignUrl(t TimeAssignVals, u UrlAssignVals) (url string) {
 	switch t.Cmd {
-	case "all", "c2s", "random":
+	case "all", "c2s", "c2t", "random", "sector":
 		if t.UrlType == "history" {
 			url = "https://data.alpaca.markets/v2/stocks/" + t.Ticker + "/trades?limit=1&start=" + u.StartTime + "&end=" + u.EndTime + "&feed=iex&currency=USD"
 		} else {
