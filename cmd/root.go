@@ -4,6 +4,7 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/fatih/color"
@@ -40,7 +41,9 @@ var rootCmd = &cobra.Command{
 		"  ks low aapl \n" +
 		"  ks news aapl \n" +
 		"  ks random \n" +
-		"  ks wsb",
+		"  ks wsb \n" +
+		"  ks sectors \n" +
+		"  ks sectors -t=1Y -s=aapl",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -57,6 +60,7 @@ func Execute() {
 	})
 
 	if len(os.Args) < 2 {
+		fmt.Println("")
 		utils.AsciiTitleText()
 	}
 	err := rootCmd.Execute()
@@ -88,7 +92,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	addSubcommandPalettes()
 	// input := os.Stdin

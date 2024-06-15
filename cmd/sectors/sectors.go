@@ -30,6 +30,9 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Example: "  ks sectors \n" +
+		"  ks sectors -t=1M \n" +
+		"  ks sectors -t=1M -s=aapl \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "sectors"
 		timeArg, _ := cmd.Flags().GetString("time")
