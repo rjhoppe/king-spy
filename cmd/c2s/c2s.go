@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package c2s
 
 import (
@@ -21,7 +18,7 @@ var (
 	timeVal        string
 )
 
-// compareSpyCmd represents the compareSpy command
+// Compare2SpyCmd represents the c2s command
 var Compare2SpyCmd = &cobra.Command{
 	Use:   "c2s",
 	Short: "Compares a ticker's performance to the SP500 over a specified time period",
@@ -30,7 +27,6 @@ var Compare2SpyCmd = &cobra.Command{
 		"  ks c2s aapl -t=1M \n" +
 		"  ks c2s aapl -t=1Y \n",
 	Run: func(cmd *cobra.Command, args []string) {
-		// timeOptions = [5]string{"1M", "6M", "YTD", "1Y", "5Y"}
 		ksCmd := "c2s"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
@@ -49,11 +45,6 @@ var Compare2SpyCmd = &cobra.Command{
 		ch2 := make(chan float64)
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
-
-		// go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
 
 		cfg := utils.GetTickerPriceConfig{
 			Key:    key,
@@ -88,14 +79,7 @@ var Compare2SpyCmd = &cobra.Command{
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
 	Compare2SpyCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// compareSpyCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func GetTickerPrice(key string, secret string, ticker string, timeVal string, urlType string, ch chan float64, wg *sync.WaitGroup, cmd string) {

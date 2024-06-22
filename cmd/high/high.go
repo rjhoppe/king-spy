@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package high
 
 import (
@@ -57,8 +54,6 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 		}
 	}
 
-	// Refactor this to use gettickerprice func
-	// is this really necessary?
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -68,7 +63,6 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 
 	priceDiff := (highestVal - curPrice)
 	percDiff := (priceDiff / highestVal) * 100
-	// priceColor := color.New(color.FgRed)
 
 	h := HighOutput{
 		ticker:      ticker,
@@ -81,22 +75,15 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 	}
 
 	formatOutputHigh(h)
-	// if cmdArgs == "high" {
-	// 	fmt.Println("")
-	// }
-	// fmt.Println("==================================================================================")
-	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$"+strconv.FormatFloat(highestVal, 'f', 2, 64)), highestDate[:10])
-	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	// fmt.Println("==================================================================================")
 }
 
-// highCmd represents the high command
+// HighCmd represents the high command
 var HighCmd = &cobra.Command{
 	Use:   "high",
 	Short: "Returns a ticker's percentage and dollar decrease from a recent high",
-	Long:  ``,
+	Example: "  ks high aapl \n" +
+		"  ks high aapl -t=6M \n",
 	Run: func(cmd *cobra.Command, args []string) {
-		// ksCmd := "high"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
@@ -119,19 +106,9 @@ var HighCmd = &cobra.Command{
 		}
 
 		GetHigh(key, secret, ticker, timeVal, cmdArgs)
-		// c2s.GetTickerPrice(key, secret, ticker, "NA", "latest", ch1, &wg1, ksCmd)
 	},
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
 	HighCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// highCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// highCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

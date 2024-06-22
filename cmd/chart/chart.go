@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package chart
 
 import (
@@ -12,34 +9,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// chartCmd represents the chart command
+// ChartCmd represents the chart command
 var ChartCmd = &cobra.Command{
-	Use:   "chart",
-	Short: "Opens a one year chart for a ticker in your default browser",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:     "chart",
+	Short:   "Opens a one year chart for a ticker in your default browser",
+	Example: "  ks chart aapl",
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
 		LaunchChart(ticker)
 	},
-}
-
-func init() {
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// chartCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// chartCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func LaunchChart(ticker string) {
@@ -54,6 +34,4 @@ func LaunchChart(ticker string) {
 			panic(err)
 		}
 	}
-
-	// timeout where program closes browser?
 }

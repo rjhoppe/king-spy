@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package c2t
 
 import (
@@ -19,7 +16,7 @@ var (
 	timeVal         string
 )
 
-// c2tCmd represents the c2t command
+// Compare2TickerCmd represents the c2t command
 var Compare2TickerCmd = &cobra.Command{
 	Use:   "c2t",
 	Short: "A brief description of your command",
@@ -51,11 +48,6 @@ to quickly create a Cobra application.`,
 		ch2 := make(chan float64)
 		ch3 := make(chan float64)
 		ch4 := make(chan float64)
-
-		// go GetTickerPrice(key, secret, ticker, timeVal, "latest", ch1, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, ticker, timeVal, "history", ch2, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, "SPY", timeVal, "latest", ch3, &wg, ksCmd)
-		// go GetTickerPrice(key, secret, "SPY", timeVal, "history", ch4, &wg, ksCmd)
 
 		cfg := utils.GetTickerPriceConfig{
 			Key:    key,
@@ -93,13 +85,4 @@ to quickly create a Cobra application.`,
 func init() {
 
 	Compare2TickerCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// c2tCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// c2tCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

@@ -1,12 +1,10 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package wsb
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -23,14 +21,9 @@ type WSBData struct {
 
 // wsbCmd represents the wsb command
 var WsbCmd = &cobra.Command{
-	Use:   "wsb",
-	Short: "Returns the top tickers mentioned on WSB and the related sentiment",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:     "wsb",
+	Short:   "Returns the top tickers mentioned on WSB and the related sentiment",
+	Example: "  ks wsb",
 	Run: func(cmd *cobra.Command, args []string) {
 		var (
 			stocks    []WSBData
@@ -39,19 +32,17 @@ to quickly create a Cobra application.`,
 
 		resp, err := http.Get("https://tradestie.com/api/v1/apps/reddit")
 		if err != nil {
-			// log.Fatal(err)
-			panic(err)
+			log.Fatal(err)
 		}
 
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
-			// log.Fatal(err)
-			panic(err)
+			log.Fatal(err)
 		}
 
 		err = json.Unmarshal(bodyBytes, &stocks)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		fmt.Println("")
@@ -68,17 +59,4 @@ to quickly create a Cobra application.`,
 		}
 		fmt.Println("==================================================================================")
 	},
-}
-
-func init() {
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// wsbCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// wsbCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
