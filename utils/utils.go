@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/rjhoppe/go-compare-to-spy/config"
 )
 
@@ -45,8 +46,10 @@ func TickerValidation(ticker string) {
 
 	err = IsTickerValid(ticker)
 	if err != nil {
-		fmt.Printf("Ticker validation error: ensure ticker: %v has exists \n", strings.ToUpper(ticker))
+		fmt.Println("")
+		fmt.Printf("%v ensure ticker %v exists \n", color.RedString("Ticker validation error:"), color.YellowString(strings.ToUpper(ticker)))
 		fmt.Println("Check spelling and ensure that the ticker is currently listed on the NYSE")
+		fmt.Println("")
 		log.Fatal(err)
 	}
 }

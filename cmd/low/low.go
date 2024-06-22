@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package low
 
 import (
@@ -57,7 +54,6 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 		}
 	}
 
-	// refactor this to use gettickerprice func
 	curPriceUrl := "https://data.alpaca.markets/v2/stocks/" + ticker + "/trades/latest?feed=iex"
 	curPriceBody, _ := utils.GetRequest(key, secret, curPriceUrl)
 	curPrice, err := jsonparser.GetFloat(curPriceBody, "trade", "p")
@@ -79,32 +75,15 @@ func GetLow(key string, secret string, ticker string, timeVal string, cmdArgs st
 	}
 
 	formatOutputLow(l)
-
-	// if cmdArgs == "low" {
-	// 	fmt.Println("")
-	// }
-
-	// fmt.Println("==================================================================================")
-	// fmt.Printf("The lowest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.RedString("$"+strconv.FormatFloat(lowestVal, 'f', 2, 64)), lowestDate[:10])
-	// fmt.Printf("Price increase off %v low: %v which is a %v increase. \n", timeVal, color.GreenString("+$"+strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.GreenString(strconv.FormatFloat(percDiff, 'f', 2, 64)+"%"))
-	// fmt.Println("==================================================================================")
-	// fmt.Printf("The highest price of %v in the last %v time period was: %v on %v \n", color.YellowString(strings.ToUpper(ticker)), timeVal, color.GreenString("$" + strconv.FormatFloat(higestVal, 'f', 2, 64)), highestDate[:10])
-	// fmt.Printf("Price decrease off %v high: %v which is a %v decrease. \n", timeVal, color.RedString("-$" + strconv.FormatFloat(priceDiff, 'f', 2, 64)), color.RedString(strconv.FormatFloat(percDiff, 'f', 2, 64) + "%"))
 }
 
-// high2LowCmd represents the high2Low command
+// LowCmd represents the low command
 var LowCmd = &cobra.Command{
 	Use:   "low",
-	Short: "Returns a ticker's percentage and dollar increase from a recent low.",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Returns a ticker's percentage and dollar increase from a recent low",
+	Example: "  ks low aapl \n" +
+		"  ks low aapl -t=6M \n",
 	Run: func(cmd *cobra.Command, args []string) {
-		// timeOptions = [5]string{"1D", "1W", "1M", "6M", "12M"}
-		// ksCmd := "low"
 		ticker := args[0]
 		utils.TickerValidation(ticker)
 		ticker = strings.ToLower(ticker)
@@ -131,16 +110,5 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	// rootCmd.AddCommand(high2LowCmd)
 	LowCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// high2LowCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// high2LowCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

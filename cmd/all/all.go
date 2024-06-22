@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package all
 
 import (
@@ -14,6 +11,7 @@ import (
 	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
 	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
+	"github.com/rjhoppe/go-compare-to-spy/cmd/sectors"
 	"github.com/rjhoppe/go-compare-to-spy/config"
 	"github.com/rjhoppe/go-compare-to-spy/utils"
 	"github.com/spf13/cobra"
@@ -25,12 +23,13 @@ var (
 	deltaPositive  string
 )
 
-// allCmd represents the all command
+// AllCmd represents the all command
 var AllCmd = &cobra.Command{
-	Use:     "all",
-	Short:   "Runs the c2s, high, low, and news cmds for a single ticker",
-	Long:    `This command packages cmds c2s, high, low, and news together for a single ticker and returns the results`,
-	Example: "  ks all aapl",
+	Use:   "all",
+	Short: "Runs the c2s, high, low, and news cmds for a single ticker",
+	Long:  `This command packages cmds c2s, high, low, and news together for a single ticker and returns the results`,
+	Example: "  ks all aapl \n" +
+		"  ks all aapl -c",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "all"
 		ticker := args[0]
@@ -105,11 +104,17 @@ var AllCmd = &cobra.Command{
 			ticker:       ticker,
 		}
 
+		sectorCfg := sectors.GetSectorsConfig{
+			Key:    key,
+			Secret: secret,
+			Cmd:    "sectors",
+		}
+
 		FormatAll(inputs)
 		low.GetLow(key, secret, ticker, "1Y", cmdArgs)
 		high.GetHigh(key, secret, ticker, "1Y", cmdArgs)
 		news.GetNews(key, secret, ticker, cmdArgs)
-		// utils.Compare2Sectors(cfg, "1Y")
+		sectors.CompareSectors(sectorCfg, "1Y", ticker)
 
 		if chartFlag {
 			chart.LaunchChart(ticker)
@@ -118,18 +123,7 @@ var AllCmd = &cobra.Command{
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-
-	// Add flag for when you want chart to display
 	AllCmd.Flags().BoolP("chart", "c", false, "Tells the program that you want it to open a chart of ticker in default browser")
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// allCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// allCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func GetPerf(tickerLatest float64, tickerHistPrice float64, ch chan float64, wg *sync.WaitGroup) {

@@ -1,6 +1,6 @@
 package data
 
-// Sector data represented by industry ETFs
+// Sector data represented by industry ETFs and used by the sectors cmd
 var SectorData = map[string]string{
 	"XLE":  "Energy",
 	"XLF":  "Finance",
@@ -34,5 +34,4 @@ var SectorData = map[string]string{
 	"VXUS": "International Stock",
 	"SLV":  "Silver",
 	"VNQ":  "Real Estate",
-	"BTCO": "Bitcoin",
 }

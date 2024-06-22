@@ -38,21 +38,17 @@ func formatOutputC2S(o Output) {
 		deltaPositive = ""
 	}
 
+	fmt.Println("")
+	fmt.Printf("%v%v%v \n", color.YellowString(strings.ToUpper(o.tickerVal)), color.YellowString(" Performance VS SPY "), color.YellowString(o.timeVal))
 	if spyPositive == "+" {
 		spyC := color.New(color.FgGreen)
 		spyTextC := color.YellowString("SPY")
-		// tickerTextC := color.YellowString("VS " + strings.ToUpper(o.tickerVal))
-		fmt.Println("")
-		// fmt.Printf("%v %v \n", spyTextC, tickerTextC)
 		fmt.Println("==================================================================================")
 		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	} else {
 		spyC := color.New(color.FgRed)
 		spyTextC := color.YellowString("SPY")
-		// tickerTextC := color.YellowString("VS " + strings.ToUpper(o.tickerVal))
-		fmt.Println("")
-		// fmt.Printf("%v %v \n", spyTextC, tickerTextC)
 		fmt.Println("==================================================================================")
 		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)

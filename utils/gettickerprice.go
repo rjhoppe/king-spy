@@ -35,7 +35,7 @@ func GetTickPrice(cfg GetTickerPriceConfig, ticker string, timeVal string, urlTy
 		tickerPrice, err := jsonparser.GetFloat(body, "trades", "[0]", "p")
 		if err != nil {
 			fmt.Println("")
-			fmt.Printf("Data retrieval error: ensure ticker: %v has existed longer than timeframe \n", strings.ToUpper(ticker))
+			fmt.Printf("Data retrieval error: ensure ticker %v has existed longer than timeframe \n", strings.ToUpper(ticker))
 			log.Fatal(err)
 		}
 		ch <- tickerPrice
