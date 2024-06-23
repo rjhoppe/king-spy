@@ -19,13 +19,15 @@ Here is a list of all the commands you can run using King SPY:
 * all
 
 # Description of Commands
-king-spy - Returns info about the application as well as descriptions of each command and usage examples
+### king-spy ###
+Returns info about the application as well as descriptions of each command and usage examples
 ```
 king-spy
 ```
 <br />
 
-c2s - Compares a ticker's performance to the SP500 over a specified time period
+### c2s ###
+Compares a ticker's performance to the SP500 over a specified time period
 ```
 king-spy c2s [ticker]
 ```
@@ -36,7 +38,8 @@ king-spy c2s [ticker] -t=[time period]
 ```
 <br />
 
-c2t - Compares one ticker's performance to another ticker over a specified time period
+### c2t ###
+Compares one ticker's performance to another ticker over a specified time period
 ```
 king-spy c2t [ticker1] [ticker2]
 ```
@@ -46,13 +49,15 @@ king-spy c2t [ticker1] [ticker2]  -t=[time period]
 ```
 <br />
 
-chart - Opens a stock chart for a specified entity in your default browser. Charting is provided by StockCharts.com
+### chart ###
+Opens a stock chart for a specified entity in your default browser. Charting is provided by StockCharts.com
 ```
 king-spy chart [ticker]
 ```
 <br />
 
-high - Returns a ticker's percentage and dollar decrease from a recent high
+### high ###
+Returns a ticker's percentage and dollar decrease from a recent high
 ```
 king-spy high [ticker]
 ```
@@ -62,7 +67,8 @@ king-spy high [ticker] -t=[time period]
 ```
 <br />
 
-low - Returns a ticker's percentage and dollar increase from a recent low
+### low ###
+Returns a ticker's percentage and dollar increase from a recent low
 ```
 king-spy low [ticker]
 ```
@@ -72,13 +78,15 @@ king-spy low [ticker] -t=[time period]
 ```
 <br />
 
-news - Returns the 5 most recent news headlines for a supplied ticker
+### news ###
+Returns the 5 most recent news headlines for a supplied ticker
 ```
 king-spy news [ticker]
 ```
 <br />
 
-random - Compares the performance of a random equity against the S&P 500
+### random ###
+Compares the performance of a random equity against the S&P 500
 ```
 king-spy random
 ```
@@ -88,13 +96,15 @@ king-spy random -t=[time period]
 ```
 <br />
 
-wsb - Returns the top tickers mentioned on the r/wallstreetbets subreddit (WSB) and the related sentiment for each
+### wsb ###
+Returns the top tickers mentioned on the r/wallstreetbets subreddit (WSB) and the related sentiment for each
 ```
 king-spy wsb
 ```
 <br />
 
-sectors - Returns the performance of various sectors over a time period
+### sectors ###
+Returns the performance of various sectors over a time period
 ```
 king-spy sectors
 ```
@@ -108,7 +118,8 @@ king-spy sectors -t=[time period] -s=[ticker]
 ```
 <br />
 
-all - Runs the c2s, high, low, sectors, and news cmds for a single ticker
+### all ###
+Runs the c2s, high, low, sectors, and news cmds for a single ticker
 ```
 king-spy all [ticker]
 ```
