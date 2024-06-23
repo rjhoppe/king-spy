@@ -3,13 +3,25 @@ King SPY is a CLI application written in Go with the Cobra library that provides
 
 Many of the tools provided in this application are not offered elsewhere (that I could find) and were included to streamline investor analysis.
 
-# Commands
-A description of each command you can run using the application:
+# Command List
+Here is a list of all the commands you can run using King SPY:
+* king-spy
+* c2s (compare to SPY)
+* c2t (compare to ticker)
+* chart
+* high
+* low
+* news
+* random
+* sectors
+* all
 
+# Description of Commands
 king-spy - Returns info about the application as well as descriptions of each command and usage examples
 ```
 king-spy
 ```
+<br />
 
 c2s - Compares a ticker's performance to the SP500 over a specified time period
 ```
@@ -20,6 +32,7 @@ NOTE: When passing a -t flag, the ticker(s) must have existed on the NYSE for th
 ```
 king-spy c2s [ticker] -t=[time period]
 ```
+<br />
 
 c2t - Compares one ticker's performance to another ticker over a specified time period
 ```
@@ -29,11 +42,13 @@ c2t with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1Y",
 ```
 king-spy c2t [ticker1] [ticker2]  -t=[time period]
 ```
+<br />
 
 chart - Opens a stock chart for a specified entity in your default browser. Charting is provided by StockCharts.com
 ```
 king-spy chart [ticker]
 ```
+<br />
 
 high - Returns a ticker's percentage and dollar decrease from a recent high
 ```
@@ -43,6 +58,7 @@ high with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1Y"
 ```
 king-spy high [ticker] -t=[time period]
 ```
+<br />
 
 low - Returns a ticker's percentage and dollar increase from a recent low
 ```
@@ -52,11 +68,13 @@ low with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1Y",
 ```
 king-spy low [ticker] -t=[time period]
 ```
+<br />
 
 news - Returns the 5 most recent news headlines for a supplied ticker
 ```
 king-spy news [ticker]
 ```
+<br />
 
 random - Compares the performance of a random equity against the S&P 500
 ```
@@ -66,11 +84,13 @@ random with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1
 ```
 king-spy random -t=[time period]
 ```
+<br />
 
 wsb - Returns the top tickers mentioned on the r/wallstreetbets subreddit (WSB) and the related sentiment for each
 ```
 king-spy wsb
 ```
+<br />
 
 sectors - Returns the performance of various sectors over a time period
 ```
@@ -84,6 +104,7 @@ sectors with optional -t flag and the -s (Stock) flag
 ```
 king-spy sectors -t=[time period] -s=[ticker]
 ```
+<br />
 
 all - Runs the c2s, high, low, sectors, and news cmds for a single ticker
 ```
