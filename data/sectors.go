@@ -19,7 +19,7 @@ var SectorData = map[string]string{
 	"XLI":  "Industrial",
 	"XLV":  "Healthcare",
 	"PPA":  "Aerospace & Defense",
-	"XTN":  "Transportation",
+	"IYT":  "Transportation",
 	"BBH":  "Biotech",
 	"VDC":  "Consumer Staples",
 	"SOCL": "Social Media",

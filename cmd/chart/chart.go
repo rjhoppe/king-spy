@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/browser"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +13,7 @@ import (
 var ChartCmd = &cobra.Command{
 	Use:     "chart",
 	Short:   "Opens a one year chart for a ticker in your default browser",
-	Example: "  ks chart aapl",
+	Example: "  king-spy chart aapl",
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
 		utils.TickerValidation(ticker)

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/magiconair/properties/assert"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/viper"
 )
 

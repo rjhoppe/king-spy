@@ -1,8 +1,8 @@
 package sectors
 
 import (
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -25,9 +25,9 @@ var SectorsCmd = &cobra.Command{
 	to specify a time period to benchmark sector performance against. This cmd can
 	also take the 's' stock flag which allows you to compare all the sectors against
 	the performance of a particular equity.`,
-	Example: "  ks sectors \n" +
-		"  ks sectors -t=1M \n" +
-		"  ks sectors -t=1M -s=aapl \n",
+	Example: "  king-spy sectors \n" +
+		"  king-spy sectors -t=1M \n" +
+		"  king-spy sectors -t=1M -s=aapl \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "sectors"
 		timeArg, _ := cmd.Flags().GetString("time")

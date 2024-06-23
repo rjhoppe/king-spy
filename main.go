@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rjhoppe/go-compare-to-spy/cmd"
+	"github.com/rjhoppe/king-spy/cmd"
 )
 
 func main() {

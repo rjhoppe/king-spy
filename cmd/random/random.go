@@ -3,8 +3,8 @@ package random
 import (
 	"sync"
 
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -17,12 +17,12 @@ var (
 
 var RandomCmd = &cobra.Command{
 	Use:   "random",
-	Short: "Compare the performance of a random equity against the S&P 500",
+	Short: "Compares the performance of a random equity against the S&P 500",
 	Long: `The random cmd pulls in a random ticker from the data/tickers.go file
 and then compares it to the S&P 500 (SPY). This cmd can take in a time variable
 with the "-t" flag.`,
-	Example: "  ks random \n" +
-		"  ks random -t=1Y",
+	Example: "  king-spy random \n" +
+		"  king-spy random -t=1Y",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "random"
 		timeArg, _ := cmd.Flags().GetString("time")

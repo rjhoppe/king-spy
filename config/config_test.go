@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rjhoppe/go-compare-to-spy/config"
+	"github.com/rjhoppe/king-spy/config"
 	"github.com/spf13/viper"
 )
 

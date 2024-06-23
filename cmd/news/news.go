@@ -8,8 +8,8 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -17,8 +17,8 @@ import (
 var NewsCmd = &cobra.Command{
 	Use:     "news",
 	Short:   "Get the most recent headlines for a specified ticker",
-	Long:    `Returns the 5 most recent news headline for a supplied ticker`,
-	Example: "  ks news aapl",
+	Long:    `Returns the 5 most recent news headlines for a supplied ticker`,
+	Example: "  king-spy news aapl",
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
 		utils.TickerValidation(ticker)

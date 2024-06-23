@@ -22,8 +22,8 @@ type WSBData struct {
 // wsbCmd represents the wsb command
 var WsbCmd = &cobra.Command{
 	Use:     "wsb",
-	Short:   "Returns the top tickers mentioned on WSB and the related sentiment",
-	Example: "  ks wsb",
+	Short:   "Returns the top tickers mentioned on r/wallstreetbets and the related sentiment for each",
+	Example: "  king-spy wsb",
 	Run: func(cmd *cobra.Command, args []string) {
 		var (
 			stocks    []WSBData
