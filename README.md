@@ -5,6 +5,10 @@ The baseline of "outperformance" is defined by outperforming the S&P 500 during 
 
 Many of the tools provided in this application are not offered elsewhere (that I could find) and were included to streamline investor analysis.
 
+# Example Output
+
+![image](https://github.com/rjhoppe/king-spy/assets/48058874/eb0c3341-27af-40cd-9fa3-986813268cd7)
+
 # Command List
 Here is a list of all the commands you can run using King SPY:
 * king-spy
