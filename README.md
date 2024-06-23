@@ -30,11 +30,11 @@ Compares a ticker's performance to the SP500 over a specified time period
 ```
 king-spy c2s [ticker]
 ```
-c2s with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1Y", "3Y", and "YTD" (default) <br />
-NOTE: When passing a -t flag, the ticker(s) must have existed on the NYSE for the entire duration of the time period or else you will receive an error
+c2s with the optional -t (Time) flag - Currently accepts "1M", "3M", "6M", "1Y", "3Y", and "YTD" (default)
 ```
 king-spy c2s [ticker] -t=[time period]
 ```
+NOTE: When passing a -t flag, the ticker(s) must have existed on the NYSE for the entire duration of the time period or else you will receive an error
 
 ### c2t ###
 Compares one ticker's performance to another ticker over a specified time period
