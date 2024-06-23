@@ -77,7 +77,7 @@ king-spy low [ticker] -t=[time period]
 ```
 
 ### news ###
-Returns the 5 most recent news headlines for a supplied ticker
+Returns the 5 most recent news headlines for a supplied ticker (headlines provided by Benzinga)
 ```
 king-spy news [ticker]
 ```
