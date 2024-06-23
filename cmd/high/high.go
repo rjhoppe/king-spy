@@ -7,8 +7,8 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -81,8 +81,8 @@ func GetHigh(key string, secret string, ticker string, timeVal string, cmdArgs s
 var HighCmd = &cobra.Command{
 	Use:   "high",
 	Short: "Returns a ticker's percentage and dollar decrease from a recent high",
-	Example: "  ks high aapl \n" +
-		"  ks high aapl -t=6M \n",
+	Example: "  king-spy high aapl \n" +
+		"  king-spy high aapl -t=6M \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		ticker := args[0]
 		utils.TickerValidation(ticker)

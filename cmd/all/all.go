@@ -7,13 +7,13 @@ import (
 	"sync"
 
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/chart"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/high"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/low"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/news"
-	"github.com/rjhoppe/go-compare-to-spy/cmd/sectors"
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/cmd/chart"
+	"github.com/rjhoppe/king-spy/cmd/high"
+	"github.com/rjhoppe/king-spy/cmd/low"
+	"github.com/rjhoppe/king-spy/cmd/news"
+	"github.com/rjhoppe/king-spy/cmd/sectors"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -26,10 +26,10 @@ var (
 // AllCmd represents the all command
 var AllCmd = &cobra.Command{
 	Use:   "all",
-	Short: "Runs the c2s, high, low, and news cmds for a single ticker",
+	Short: "Runs the c2s, high, low, sectors, and news cmds for a single ticker",
 	Long:  `This command packages cmds c2s, high, low, and news together for a single ticker and returns the results`,
-	Example: "  ks all aapl \n" +
-		"  ks all aapl -c",
+	Example: "  king-spy all aapl \n" +
+		"  king-spy all aapl -c",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "all"
 		ticker := args[0]

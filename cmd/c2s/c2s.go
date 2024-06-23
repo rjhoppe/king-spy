@@ -6,8 +6,8 @@ import (
 	"sync"
 
 	"github.com/buger/jsonparser"
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -22,10 +22,9 @@ var (
 var Compare2SpyCmd = &cobra.Command{
 	Use:   "c2s",
 	Short: "Compares a ticker's performance to the SP500 over a specified time period",
-	Long:  ``,
-	Example: "  ks c2s aapl \n" +
-		"  ks c2s aapl -t=1M \n" +
-		"  ks c2s aapl -t=1Y \n",
+	Example: "  king-spy c2s aapl \n" +
+		"  king-spy c2s aapl -t=1M \n" +
+		"  king-spy c2s aapl -t=1Y \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "c2s"
 		ticker := args[0]

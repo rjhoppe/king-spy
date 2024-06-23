@@ -3,7 +3,7 @@ package utils
 import (
 	"math/rand"
 
-	"github.com/rjhoppe/go-compare-to-spy/data"
+	"github.com/rjhoppe/king-spy/data"
 )
 
 func SelectRandomTicker() (string, string) {

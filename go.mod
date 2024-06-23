@@ -1,4 +1,4 @@
-module github.com/rjhoppe/go-compare-to-spy
+module github.com/rjhoppe/king-spy
 
 go 1.21
 

@@ -9,8 +9,8 @@ import (
 
 	"github.com/buger/jsonparser"
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/data"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/data"
+	"github.com/rjhoppe/king-spy/utils"
 )
 
 type Sector struct {
@@ -77,7 +77,7 @@ func getSectorCurPrice(cfg GetSectorsConfig, ticker string, ch chan float64) {
 	t := utils.TimeAssignVals{
 		TimeVal: "NA",
 		Ticker:  ticker,
-		Cmd:     "sector",
+		Cmd:     "sectors",
 		UrlType: "latest",
 	}
 	u := utils.AssignTime(t)
@@ -98,7 +98,7 @@ func getSectorHistPrice(cfg GetSectorsConfig, ticker string, timeVal string, ch 
 	t := utils.TimeAssignVals{
 		TimeVal: timeVal,
 		Ticker:  ticker,
-		Cmd:     "sector",
+		Cmd:     "sectors",
 		UrlType: "history",
 	}
 	u := utils.AssignTime(t)

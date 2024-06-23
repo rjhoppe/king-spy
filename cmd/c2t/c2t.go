@@ -4,8 +4,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rjhoppe/go-compare-to-spy/config"
-	"github.com/rjhoppe/go-compare-to-spy/utils"
+	"github.com/rjhoppe/king-spy/config"
+	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -19,13 +19,10 @@ var (
 // Compare2TickerCmd represents the c2t command
 var Compare2TickerCmd = &cobra.Command{
 	Use:   "c2t",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Compares one ticker's performance to another ticker over a specified time period",
+	Example: "  king-spy c2t nvda amd \n" +
+		"  king-spy c2t nvda amd -t=1M \n" +
+		"  king-spy c2t nvda amd -t=1Y \n",
 	Run: func(cmd *cobra.Command, args []string) {
 		ksCmd := "c2t"
 		ticker1 := args[0]

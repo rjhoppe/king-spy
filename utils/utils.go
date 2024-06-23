@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
-	"github.com/rjhoppe/go-compare-to-spy/config"
+	"github.com/rjhoppe/king-spy/config"
 )
 
 // CheckTickerBadChars Tests ticker input for special chars, exported for testing
