@@ -1,5 +1,7 @@
 # Overview
-King SPY is a CLI application written in Go with the Cobra library that provides a suite of stock analysis tools to help investors discover outperforming equities within a given time period. In most instances, the baseline of "outperformance" is defined by outperforming the S&P 500 during a specified period of time, which is for convenience represented by the popular SPDR S&P 500 ETF (SPY).
+King SPY is a CLI application written in Go with the Cobra library that provides a suite of stock analysis tools to help investors discover outperforming equities within a given time period.
+
+The baseline of "outperformance" is defined by outperforming the S&P 500 during a specified period of time, which is for convenience represented by the popular SPDR S&P 500 ETF (SPY).
 
 Many of the tools provided in this application are not offered elsewhere (that I could find) and were included to streamline investor analysis.
 
