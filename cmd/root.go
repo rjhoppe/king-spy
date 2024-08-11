@@ -16,7 +16,6 @@ import (
 	"github.com/rjhoppe/king-spy/cmd/news"
 	"github.com/rjhoppe/king-spy/cmd/random"
 	"github.com/rjhoppe/king-spy/cmd/sectors"
-	"github.com/rjhoppe/king-spy/cmd/vix"
 	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
@@ -73,7 +72,8 @@ func addSubcommandPalettes() {
 	rootCmd.AddCommand(all.AllCmd)
 	rootCmd.AddCommand(buzz.BuzzCmd)
 	rootCmd.AddCommand(sectors.SectorsCmd)
-	rootCmd.AddCommand(vix.VixCmd)
+	// WIP
+	// rootCmd.AddCommand(vix.VixCmd)
 }
 
 func init() {
