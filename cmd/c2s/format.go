@@ -38,29 +38,30 @@ func formatOutputC2S(o Output) {
 		deltaPositive = ""
 	}
 
+	spacing := FormatOutput(o.tickerVal)
 	fmt.Println("")
 	fmt.Printf("%v%v%v \n", color.YellowString(strings.ToUpper(o.tickerVal)), color.YellowString(" Performance VS SPY "), color.YellowString(o.timeVal))
 	if spyPositive == "+" {
 		spyC := color.New(color.FgGreen)
 		spyTextC := color.YellowString("SPY")
 		fmt.Println("==================================================================================")
-		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
+		fmt.Printf("%v %v performance: %v", spyTextC, o.timeVal, spacing)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	} else {
 		spyC := color.New(color.FgRed)
 		spyTextC := color.YellowString("SPY")
 		fmt.Println("==================================================================================")
-		fmt.Printf("%v %v performance: ", spyTextC, o.timeVal)
+		fmt.Printf("%v %v performance: %v", spyTextC, o.timeVal, spacing)
 		spyC.Printf("%v%.2f%% \n", spyPositive, spyPerf)
 	}
 
 	if tickerPositive == "+" {
 		tickerC := color.New(color.FgGreen)
-		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
+		fmt.Printf("%v %v performance:        ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
 		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 	} else {
 		tickerC := color.New(color.FgRed)
-		fmt.Printf("%v %v performance: ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
+		fmt.Printf("%v %v performance:        ", color.YellowString(strings.ToUpper(o.tickerVal)), o.timeVal)
 		tickerC.Printf("%v%.2f%% \n", tickerPositive, tickerPerf)
 	}
 
@@ -74,4 +75,21 @@ func formatOutputC2S(o Output) {
 		deltaC.Printf("%v%.2f%% \n", deltaPositive, deltaPerf)
 	}
 	fmt.Println("==================================================================================")
+}
+
+func FormatOutput(ticker string) (spacing string) {
+	spaceLen := len(ticker) - 3
+	switch spaceLen {
+	case 2:
+		spacing = "         "
+	case 1:
+		spacing = "        "
+	case 0:
+		spacing = "       "
+	case -1:
+		spacing = "      "
+	case -2:
+		spacing = "     "
+	}
+	return spacing
 }

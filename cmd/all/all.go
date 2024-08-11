@@ -115,6 +115,7 @@ var AllCmd = &cobra.Command{
 		high.GetHigh(key, secret, ticker, "1Y", cmdArgs)
 		news.GetNews(key, secret, ticker, cmdArgs)
 		sectors.CompareSectors(sectorCfg, "1Y", ticker)
+		fmt.Println("")
 
 		if chartFlag {
 			chart.LaunchChart(ticker)

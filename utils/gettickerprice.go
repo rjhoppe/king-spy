@@ -36,6 +36,7 @@ func GetTickPrice(cfg GetTickerPriceConfig, ticker string, timeVal string, urlTy
 		if err != nil {
 			fmt.Println("")
 			fmt.Printf("Data retrieval error: ensure ticker %v has existed longer than timeframe \n", strings.ToUpper(ticker))
+			fmt.Println("Ticker needs to have been publicly traded for longer than a year to run the implicit 'YTD' timeframe")
 			log.Fatal(err)
 		}
 		ch <- tickerPrice

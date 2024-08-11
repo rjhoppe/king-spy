@@ -22,7 +22,6 @@ var SectorData = map[string]string{
 	"IYT":  "Transportation",
 	"BBH":  "Biotech",
 	"VDC":  "Consumer Staples",
-	"SOCL": "Social Media",
 	"NERD": "Video Games",
 	"GLD":  "Gold",
 	"GDX":  "Gold Miners",
