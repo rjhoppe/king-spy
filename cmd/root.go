@@ -7,6 +7,7 @@ import (
 	"github.com/fatih/color"
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/rjhoppe/king-spy/cmd/all"
+	"github.com/rjhoppe/king-spy/cmd/buzz"
 	"github.com/rjhoppe/king-spy/cmd/c2s"
 	"github.com/rjhoppe/king-spy/cmd/c2t"
 	"github.com/rjhoppe/king-spy/cmd/chart"
@@ -15,7 +16,7 @@ import (
 	"github.com/rjhoppe/king-spy/cmd/news"
 	"github.com/rjhoppe/king-spy/cmd/random"
 	"github.com/rjhoppe/king-spy/cmd/sectors"
-	"github.com/rjhoppe/king-spy/cmd/wsb"
+	"github.com/rjhoppe/king-spy/cmd/vix"
 	"github.com/rjhoppe/king-spy/utils"
 	"github.com/spf13/cobra"
 )
@@ -37,9 +38,10 @@ var rootCmd = &cobra.Command{
 		"  king-spy low aapl \n" +
 		"  king-spy news aapl \n" +
 		"  king-spy random \n" +
-		"  king-spy wsb \n" +
+		"  king-spy buzz \n" +
 		"  king-spy sectors \n" +
-		"  king-spy sectors -t=1Y -s=aapl",
+		"  king-spy sectors -t=1Y -s=aapl" +
+		"  king-spy vix aapl",
 }
 
 func Execute() {
@@ -69,8 +71,9 @@ func addSubcommandPalettes() {
 	rootCmd.AddCommand(random.RandomCmd)
 	rootCmd.AddCommand(chart.ChartCmd)
 	rootCmd.AddCommand(all.AllCmd)
-	rootCmd.AddCommand(wsb.WsbCmd)
+	rootCmd.AddCommand(buzz.BuzzCmd)
 	rootCmd.AddCommand(sectors.SectorsCmd)
+	rootCmd.AddCommand(vix.VixCmd)
 }
 
 func init() {

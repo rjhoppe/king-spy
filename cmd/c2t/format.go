@@ -41,6 +41,10 @@ func formatOutputC2T(to TickersOutput) {
 
 	ticker1Spaces := tickerSpacing(to.ticker1Val)
 	ticker2Spaces := tickerSpacing(to.ticker2Val)
+	if len(to.ticker1Val) == 4 && len(to.ticker2Val) == 4 {
+		ticker1Spaces += " "
+		ticker2Spaces += " "
+	}
 
 	fmt.Println("")
 	fmt.Println(color.YellowString(strings.ToUpper(to.ticker1Val) + " VS " + strings.ToUpper(to.ticker2Val) + " " + to.timeVal + " PERFORMANCE"))

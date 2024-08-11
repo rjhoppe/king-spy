@@ -80,6 +80,5 @@ var Compare2TickerCmd = &cobra.Command{
 }
 
 func init() {
-
 	Compare2TickerCmd.Flags().StringP("time", "t", "", "A length of time for performance comparison")
 }
